@@ -8,6 +8,7 @@ import (
 	"golang.org/x/crypto/blake2s"
 	"golang.org/x/crypto/blake2b"
 	"encoding/hex"
+	"sort"
 )
 
 //define function type
@@ -91,4 +92,13 @@ func HashSum(algorithm string, data string) string {
 	} else {
 		return ""
 	}
+}
+
+func AlgorithmList() []string{
+	var response []string = make([]string, 0)
+	for key := range hash_algorithms {
+        response = append(response, key)
+    }
+	sort.SliceStable(response, func(i, j int) bool { return response[i] < response[j] })
+	return response
 }

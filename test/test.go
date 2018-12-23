@@ -2,6 +2,7 @@ package main
 import (
 	"../hash"
 	"fmt"
+	"sort"
 )
 
 func test_HashSum() bool {
@@ -34,10 +35,34 @@ func test_HashSum() bool {
 	return true
 }
 
+func test_AlgorithmList() bool {
+	var result []string = []string{"sha256", "sha384", "sha512", "ripemd160", "sha3_224", "sha3_256", "sha3_384", "sha3_512", "sha512_224", "sha512_256", "black2s_256", "black2s_384", "black2s_512"}
+	sort.SliceStable(result, func(i, j int) bool { return result[i] < result[j] })
+	res := hash.AlgorithmList()
+	if(len(result) != len(res)) {
+		fmt.Printf("Failed to do hash algorithm %d %d\n", len(result), len(res))
+		return false
+	}
+
+	for i := range res {
+		if res[i] != result[i] {
+			fmt.Printf("Failed to do hash algorithm %s and %s\n", res[i], result[i])
+			return false
+		}
+	}
+
+	return true
+}
+
 func main() {
 	if !test_HashSum() {
 		fmt.Printf("Failed to do HashSum\n")
 		return
 	}
+	if !test_AlgorithmList() {
+		fmt.Printf("Failed to do AlgorithmList\n")
+		return
+	}
+
 	fmt.Printf("Finish to do all test\n")
 }
