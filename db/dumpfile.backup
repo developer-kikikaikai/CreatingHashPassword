@@ -51,7 +51,6 @@ CREATE TABLE `password_tbl` (
   `algorithm` varchar(50) NOT NULL,
   `seed` varchar(50) DEFAULT NULL,
   `title` varchar(50) NOT NULL,
-  PRIMARY KEY (`username`),
   KEY `username` (`username`),
   CONSTRAINT `password_tbl_ibfk_1` FOREIGN KEY (`username`) REFERENCES `account_tbl` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
