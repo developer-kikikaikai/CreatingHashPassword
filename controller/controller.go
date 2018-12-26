@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"../hash"
 	"github.com/labstack/echo"
 )
 
@@ -13,18 +14,21 @@ type Template struct {
 
 // 各HTMLテンプレートに共通レイアウトを適用した結果を保存します（初期化時に実行）。
 func LoadTemplates() {
-	var baseTemplate = "html/layout.html"
 	templates = make(map[string]*template.Template)
 	templates["indexs"] = template.Must(
-	    template.ParseFiles(baseTemplate, "html/hello.html"))
+	    template.ParseFiles("templates/index.html.tpl"))
 }
 
 func ExecTemplates(w io.Writer, name string, data interface{}) error {
-    return templates[name].ExecuteTemplate(w, "layout.html", data)
+    return templates[name].ExecuteTemplate(w, "index.html.tpl", data)
 }
 
 func HandleIndex(c echo.Context) error{
-    return c.Render(http.StatusOK, "indexs", "World")
+	var data struct {
+		Algorithms  []string
+	}
+    data.Algorithms = hash.AlgorithmList()
+    return c.Render(http.StatusOK, "indexs", data)
 }
 
 func HandleUserInfo(c echo.Context) error{
