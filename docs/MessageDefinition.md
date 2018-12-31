@@ -2,70 +2,70 @@
 
 All of request/response format  are JSON
 
-## Password /api/password
+## passphrase /api/passphrase
 
-This is for generating password.
+This is for generating passphrase.
 
-### GET /api/password
+### GET /api/passphrase
 
 - Request format:
 	```json
 	{
-		"title": "string of this password's title",
+		"title": "string of this passphrase's title",
 		"keyphrase": "keyphrase string",
-		"algorithm": "generating password algorithm, write hash string",
-		"seed": "seed value of string to generate password"
+		"algorithm": "generating passphrase algorithm, write hash string",
+		"seed": "seed value of string to generate passphrase"
 	}
 	```
 
 - Response:
-	- HTTP 200 OK if server generate password:
+	- HTTP 200 OK if server generate passphrase:
 		```json
 		{
-			"result": "password result string"
+			"result": "passphrase result string"
 		}
 		```
-	- (Other status code if server failed to generate password, not implement)
+	- (Other status code if server failed to generate passphrase, not implement)
 
 ### Others
 
-- POST/PUT/DELETE api/password are Nothing
+- POST/PUT/DELETE api/passphrase are Nothing
 
-## PasswordInformation /api/passwordInfo
+## passphraseInformation /api/passphraseInfo
 
-This is for login user's password information.  
-User can store base of generating password information.
+This is for login user's passphrase information.  
+User can store base of generating passphrase information.
 
-### GET /api/passwordInfo
+### GET /api/passphraseInfo
 
 - Request format:
 	- body data is NULL
 	- User autorization is by Digest autorization.
 
 - Response:
-	- HTTP 200 OK if server generate password:
+	- HTTP 200 OK if server generate passphrase:
 		```json
 		{
 			"value of title": {
-				"algorithm": "generating password algorithm, write hash string",
-				"seed": "seed value of string to generate password"
+				"algorithm": "generating passphrase algorithm, write hash string",
+				"seed": "seed value of string to generate passphrase"
 			},
 			...
 		}
 		```
-	- (Other status code if server failed to generate password, not implement)
+	- (Other status code if server failed to generate passphrase, not implement)
 
-### POST/PUT /api/passwordInfo
+### POST/PUT /api/passphraseInfo
 
-Create/Update PasswordInformation
+Create/Update passphraseInformation
 
 - Request format:
 	- body data is following:
 		```json
 		[
 			"value of title": {
-				"algorithm": "generating password algorithm, write hash string",
-				"seed": "seed value of string to generate password"
+				"algorithm": "generating passphrase algorithm, write hash string",
+				"seed": "seed value of string to generate passphrase"
 			},
 			...
 		]
@@ -74,14 +74,14 @@ Create/Update PasswordInformation
 
 - Response:
 	- HTTP 200 OK if server success to update (body data is NULL).
-	- Other status code if server failed to generate password, not implement
+	- Other status code if server failed to generate passphrase, not implement
 		- 400 Bad request
 			- if PUT request and there is no same title's data, and
 			- if POST reqest and there is already created same title's data.
 
-### DELETE /api/passwordInfo
+### DELETE /api/passphraseInfo
 
-Delete PasswordInformation
+Delete passphraseInformation
 
 - Request format:
 	- body data is following:
@@ -95,7 +95,7 @@ Delete PasswordInformation
 
 - Response:
 	- HTTP 200 OK if server success to update (body data is NULL).
-	- Other status code if server failed to generate password, not implement
+	- Other status code if server failed to generate passphrase, not implement
 		- 400 Bad request
 			- if there is no data.
 
@@ -122,7 +122,7 @@ Create UserAccount
 
 - Response:
 	- HTTP 200 OK if server success to update (body data is NULL).
-	- Other status code if server failed to generate password, not implement
+	- Other status code if server failed to generate passphrase, not implement
 		- 400 Bad request
 			- if there is already used username.
 
@@ -142,7 +142,7 @@ Update UserAccount
 
 - Response:
 	- HTTP 200 OK if server success to update (body data is NULL).
-	- Other status code if server failed to generate password, not implement
+	- Other status code if server failed to generate passphrase, not implement
 		- 400 Bad request
 			- if there is no user.
 
@@ -161,9 +161,9 @@ Delete UserAccount
 
 - Response:
 	- HTTP 200 OK if server success to update (body data is NULL).
-	- Other status code if server failed to generate password, not implement
+	- Other status code if server failed to generate passphrase, not implement
 		- 400 Bad request
 			- if there is no user.
 
 - Note:
-	- All of password information which is created by the user are deleted.
+	- All of passphrase information which is created by the user are deleted.
