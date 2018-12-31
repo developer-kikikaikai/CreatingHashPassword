@@ -35,6 +35,6 @@ func HandleUserInfo(c echo.Context) error{
     return c.JSON(http.StatusOK, map[string]interface{}{"hello": "world"})
 }
 
-func HandlePassword(c echo.Context) error{
+func HandlePassphrase(c echo.Context) error{
     return c.JSON(http.StatusOK, map[string]interface{}{"hello": "world"})
 }

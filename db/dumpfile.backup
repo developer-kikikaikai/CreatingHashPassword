@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
 --
--- Host: localhost    Database: createHashPassword
+-- Host: localhost    Database: createHashPassphrase
 -- ------------------------------------------------------
 -- Server version	5.7.24-0ubuntu0.18.04.1
 
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `account_tbl`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account_tbl` (
   `username` varchar(50) NOT NULL,
-  `password` varchar(129) NOT NULL,
+  `passphrase` varchar(129) NOT NULL,
   PRIMARY KEY (`username`),
   KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -40,29 +40,29 @@ LOCK TABLES `account_tbl` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `password_tbl`
+-- Table structure for table `passphrase_tbl`
 --
 
-DROP TABLE IF EXISTS `password_tbl`;
+DROP TABLE IF EXISTS `passphrase_tbl`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `password_tbl` (
+CREATE TABLE `passphrase_tbl` (
   `username` varchar(50) NOT NULL,
   `algorithm` varchar(50) NOT NULL,
-  `seed` varchar(50) DEFAULT NULL,
+  `seed` varchar(129) DEFAULT NULL,
   `title` varchar(50) NOT NULL,
   KEY `username` (`username`),
-  CONSTRAINT `password_tbl_ibfk_1` FOREIGN KEY (`username`) REFERENCES `account_tbl` (`username`) ON DELETE CASCADE
+  CONSTRAINT `passphrase_tbl_ibfk_1` FOREIGN KEY (`username`) REFERENCES `account_tbl` (`username`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `password_tbl`
+-- Dumping data for table `passphrase_tbl`
 --
 
-LOCK TABLES `password_tbl` WRITE;
-/*!40000 ALTER TABLE `password_tbl` DISABLE KEYS */;
-/*!40000 ALTER TABLE `password_tbl` ENABLE KEYS */;
+LOCK TABLES `passphrase_tbl` WRITE;
+/*!40000 ALTER TABLE `passphrase_tbl` DISABLE KEYS */;
+/*!40000 ALTER TABLE `passphrase_tbl` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

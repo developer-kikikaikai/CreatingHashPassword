@@ -57,29 +57,29 @@ func test_AlgorithmList() bool {
 
 func test_GetAccount() bool {
 	res,err := db.GetAccount("test")
-	if res.Username !=  "test" || res.Password != "testpass" || err != nil {
+	if res.Username !=  "test" || res.Passphrase != "testpass" || err != nil {
 		fmt.Printf("Failed to get GetAccount with test\n")
 		return false
 	}
 
 	res, err = db.GetAccount("test2")
-	if res.Username !=  "test2" || res.Password != "testpass2" || err != nil{
+	if res.Username !=  "test2" || res.Passphrase != "testpass2" || err != nil{
 		fmt.Printf("Failed to get GetAccount with test2\n")
 		return false
 	}
 
 	res, err = db.GetAccount("nodata")
-	if res.Username !=  "" || res.Password != "" || err == nil{
+	if res.Username !=  "" || res.Passphrase != "" || err == nil{
 		fmt.Printf("Failed to get GetAccount without data\n")
 		return false
 	}
 	return true
 }
 
-func test_GetAllPassword() bool {
-	res,err := db.GetAllPassword("test")
+func test_GetAllPassphrase() bool {
+	res,err := db.GetAllPassphrase("test")
 	if len(res) != 2 || err != nil{
-		fmt.Printf("Failed to get GetAllPassword without data\n")
+		fmt.Printf("Failed to get GetAllPassphrase without data\n")
 		return false
 	}
 
@@ -87,32 +87,32 @@ func test_GetAllPassword() bool {
 		result1 := (res[0].Username != "test" || res[0].Title != "testtitle2" ||  res[0].Algorithm != "sha512" || res[0].Seed != "seed2" )
 		result2 := (res[1].Username != "test" || res[1].Title != "testtitle1" ||  res[1].Algorithm != "sha256" || res[1].Seed != "seed1" )
 		if result1 && result2 {
-			fmt.Printf("Failed to get GetAllPassword without data\n")
+			fmt.Printf("Failed to get GetAllPassphrase without data\n")
 			return false
 		}
 	} else {
 		result1 := (res[1].Username != "test" || res[1].Title != "testtitle2" ||  res[1].Algorithm != "sha512" || res[1].Seed != "seed2" )
 		result2 := (res[0].Username != "test" || res[0].Title != "testtitle1" ||  res[0].Algorithm != "sha256" || res[0].Seed != "seed1" )
 		if result1 && result2 {
-			fmt.Printf("Failed to get GetAllPassword without data\n")
+			fmt.Printf("Failed to get GetAllPassphrase without data\n")
 			return false
 		}
 	}
 	return true
 }
 
-func test_GetPasswordInfo() bool {
+func test_GetPassphraseInfo() bool {
 	// no info
-	res, err := db.GetPasswordInfo("test", "testtitle")
+	res, err := db.GetPassphraseInfo("test", "testtitle")
 	if res.Title != "" || err == nil {
-		fmt.Printf("Failed to get GetPasswordInfo\n")
+		fmt.Printf("Failed to get GetPassphraseInfo\n")
 		return false
 	}
 
-	res, err = db.GetPasswordInfo("test", "testtitle1")
+	res, err = db.GetPassphraseInfo("test", "testtitle1")
 	result1 := (res.Username != "test" || res.Title != "testtitle1" ||  res.Algorithm != "sha256" || res.Seed != "seed1" )
 	if result1 || err != nil{
-		fmt.Printf("Failed to get GetPasswordInfo with testtitle1\n")
+		fmt.Printf("Failed to get GetPassphraseInfo with testtitle1\n")
 		return false
 	}
 
@@ -121,27 +121,27 @@ func test_GetPasswordInfo() bool {
 
 func test_SetAccount() bool {
 	//add
-	account := db.Account{"newuser", "newpassword"}
+	account := db.Account{"newuser", "newpassphrase"}
 	if !db.SetAccount(account) {
 		fmt.Printf("Failed to set New account newuser\n")
 		return false
 	}
 
 	res, err := db.GetAccount(account.Username)
-	if res.Username != account.Username || res.Password != account.Password || err != nil {
+	if res.Username != account.Username || res.Passphrase != account.Passphrase || err != nil {
 		fmt.Printf("Failed to check New account newuser\n")
 		return false
 	}
 
 	//update
-	account.Password = "newpassword2"
+	account.Passphrase = "newpassphrase2"
 	if !db.SetAccount(account) {
 		fmt.Printf("Failed to set New account newuser\n")
 		return false
 	}
 
 	res, err = db.GetAccount(account.Username)
-	if res.Username != account.Username || res.Password != account.Password || err != nil {
+	if res.Username != account.Username || res.Passphrase != account.Passphrase || err != nil {
 		fmt.Printf("Failed to check New account newuser\n")
 		return false
 	}
@@ -167,49 +167,49 @@ func test_DeleteAccount() bool{
 	return true
 }
 
-func test_SetPasswordInfo() bool {
+func test_SetPassphraseInfo() bool {
 	//add
-	password := db.PasswordInfo{"test", "newalgorithm", "newseed", "newtitle"}
-	if !db.SetPasswordInfo(password) {
+	passphrase := db.PassphraseInfo{"test", "newalgorithm", "newseed", "newtitle"}
+	if !db.SetPassphraseInfo(passphrase) {
 		fmt.Printf("Failed to set New account newuser\n")
 		return false
 	}
 
-	res, err := db.GetPasswordInfo(password.Username, password.Title)
-	if res.Username != password.Username || res.Title != password.Title || res.Algorithm != password.Algorithm || res.Seed != password.Seed || err != nil {
-		fmt.Printf("Failed to check New password info (newtitle)\n")
+	res, err := db.GetPassphraseInfo(passphrase.Username, passphrase.Title)
+	if res.Username != passphrase.Username || res.Title != passphrase.Title || res.Algorithm != passphrase.Algorithm || res.Seed != passphrase.Seed || err != nil {
+		fmt.Printf("Failed to check New passphrase info (newtitle)\n")
 		return false
 	}
 
 	//update
-	password.Seed = "newseed2"
-	if !db.SetPasswordInfo(password) {
-		fmt.Printf("Failed to set New password info (newtitle)\n")
+	passphrase.Seed = "newseed2"
+	if !db.SetPassphraseInfo(passphrase) {
+		fmt.Printf("Failed to set New passphrase info (newtitle)\n")
 		return false
 	}
 
-	res, err = db.GetPasswordInfo(password.Username, password.Title)
-	if res.Username != password.Username || res.Title != password.Title || res.Algorithm != password.Algorithm || res.Seed != password.Seed || err != nil{
-		fmt.Printf("Failed to check New password info (newtitle)\n")
+	res, err = db.GetPassphraseInfo(passphrase.Username, passphrase.Title)
+	if res.Username != passphrase.Username || res.Title != passphrase.Title || res.Algorithm != passphrase.Algorithm || res.Seed != passphrase.Seed || err != nil{
+		fmt.Printf("Failed to check New passphrase info (newtitle)\n")
 		return false
 	}
 
 	//no insert data, no user
-	password.Username = "unknown_user"
-	if db.SetPasswordInfo(password) {
+	passphrase.Username = "unknown_user"
+	if db.SetPassphraseInfo(passphrase) {
 		fmt.Printf("Not failed to add unknown user\n")
 		return false
 	}
 	return true
 }
 
-func test_DeletePasswordInfo() bool{
-	if !db.DeletePasswordInfo("test", "newtitle") {
+func test_DeletePassphraseInfo() bool{
+	if !db.DeletePassphraseInfo("test", "newtitle") {
 		fmt.Printf("Failed to remove account newtitle\n")
 		return false
 	}
 
-	res, err := db.GetPasswordInfo("test", "newtitle")
+	res, err := db.GetPassphraseInfo("test", "newtitle")
 	if res.Username != "" || err == nil {
 		fmt.Printf("Failed to remove account newtitle 2\n")
 		return false
@@ -237,13 +237,13 @@ func main() {
 		return
 	}
 
-	if !test_GetAllPassword() {
-		fmt.Printf("Failed to do GetAllPassword\n")
+	if !test_GetAllPassphrase() {
+		fmt.Printf("Failed to do GetAllPassphrase\n")
 		return
 	}
 
-	if !test_GetPasswordInfo() {
-		fmt.Printf("Failed to do GetPasswordInfo\n")
+	if !test_GetPassphraseInfo() {
+		fmt.Printf("Failed to do GetPassphraseInfo\n")
 		return
 	}
 
@@ -257,12 +257,12 @@ func main() {
 		return
 	}
 
-	if !test_SetPasswordInfo() {
-		fmt.Printf("Failed to do SetPasswordInfo\n")
+	if !test_SetPassphraseInfo() {
+		fmt.Printf("Failed to do SetPassphraseInfo\n")
 		return
 	}
-	if !test_DeletePasswordInfo() {
-		fmt.Printf("Failed to do DeletePasswordInfo\n")
+	if !test_DeletePassphraseInfo() {
+		fmt.Printf("Failed to do DeletePassphraseInfo\n")
 		return
 	}
 
