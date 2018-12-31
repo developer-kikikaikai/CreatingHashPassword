@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"../hash"
 	"github.com/labstack/echo"
+    "github.com/abbot/go-http-auth"
 )
 
 var templates map[string]*template.Template
@@ -23,7 +24,7 @@ func ExecTemplates(w io.Writer, name string, data interface{}) error {
     return templates[name].ExecuteTemplate(w, "index.html.tpl", data)
 }
 
-func HandleIndex(c echo.Context) error{
+func HandleIndex(c echo.Context, r *auth.AuthenticatedRequest) error{
 	var data struct {
 		Algorithms  []string
 	}
@@ -31,10 +32,10 @@ func HandleIndex(c echo.Context) error{
     return c.Render(http.StatusOK, "indexs", data)
 }
 
-func HandleUserInfo(c echo.Context) error{
+func HandleUserInfo(c echo.Context, r *auth.AuthenticatedRequest) error{
     return c.JSON(http.StatusOK, map[string]interface{}{"hello": "world"})
 }
 
-func HandlePassphrase(c echo.Context) error{
+func HandlePassphrase(c echo.Context, r *auth.AuthenticatedRequest) error{
     return c.JSON(http.StatusOK, map[string]interface{}{"hello": "world"})
 }

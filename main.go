@@ -28,9 +28,11 @@ func main() {
     e.Use(middleware.Recover())
 
 	// 各ルーティングに対するハンドラを設定
-	e.GET("/", controller.HandleIndex)
-	e.GET("/api/user", controller.HandleUserInfo)
-	e.GET("/api/passphrase", controller.HandlePassphrase)
+	group := e.Group("/api/")
+	group.Any("index", controller.DigestAuthenticate(controller.HandleIndex))
+	e.GET("/", controller.NoAuthenticate(controller.HandleIndex))
+	e.GET("/api/user", controller.NoAuthenticate(controller.HandleUserInfo))
+	e.GET("/api/passphrase", controller.NoAuthenticate(controller.HandlePassphrase))
 
     // サーバーを開始
     e.Logger.Fatal(e.Start(":3000"))
