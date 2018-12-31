@@ -1,8 +1,11 @@
-DBNAME=creatHashPassphrase
+VALUE=(`ruby parse.rb`)
+DBNAME=${VALUE[0]}
+USER=${VALUE[1]}
+PASS=${VALUE[2]}
 #import DB
-mysql -uroot -p$1 -e "CREATE DATABASE ${DBNAME}"
-mysql -uroot -p$1 ${DBNAME} < ../db/dumpfile.backup
-./insert_db.sh $1 ${DBNAME}
-go run test.go
-./cleanup_db.sh $1 ${DBNAME}
-mysql -uroot -p$1 -e "DROP DATABASE ${DBNAME}"
+mysql -u${USER} -p${PASS} -e "CREATE DATABASE ${DBNAME}"
+mysql -u${USER} -p${PASS} ${DBNAME} < ../db/dumpfile.backup
+./insert_db.sh ${USER} ${PASS} ${DBNAME}
+go run unittest.go
+./cleanup_db.sh ${USER} ${PASS} ${DBNAME}
+mysql -u${USER} -p${PASS} -e "DROP DATABASE ${DBNAME}"

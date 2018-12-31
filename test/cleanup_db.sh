@@ -1,2 +1,2 @@
-mysql -u root -p$1 -D $2 -e "DELETE FROM account_tbl"
-mysql -u root -p$1 -D $2 -e "DELETE FROM passphrase_tbl"
+mysql -u $1 -p$2 -D $3 -e "DELETE FROM account_tbl"
+mysql -u $1 -p$2 -D $3 -e "DELETE FROM passphrase_tbl"
