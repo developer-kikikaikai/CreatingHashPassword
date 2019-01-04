@@ -21,7 +21,7 @@ func authenticate(user, realm string) string {
 var authenticator * auth.DigestAuth = authwrapNewDigestAuthenticator()
 
 func authwrapNewDigestAuthenticator() *auth.DigestAuth {
-	res := auth.NewDigestAuthenticator("example.com", authenticate)
+	res := auth.NewDigestAuthenticator("CreatingHashPassword", authenticate)
 	return res
 }
 

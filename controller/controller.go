@@ -32,10 +32,4 @@ func HandleIndex(c echo.Context, r *auth.AuthenticatedRequest) error{
     return c.Render(http.StatusOK, "indexs", data)
 }
 
-func HandleUserInfo(c echo.Context, r *auth.AuthenticatedRequest) error{
-    return c.JSON(http.StatusOK, map[string]interface{}{"hello": "world"})
-}
 
-func HandlePassphrase(c echo.Context, r *auth.AuthenticatedRequest) error{
-    return c.JSON(http.StatusOK, map[string]interface{}{"hello": "world"})
-}
