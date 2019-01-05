@@ -1,0 +1,30 @@
+{
+	"test passphrase success":{
+			"uri":"/api/passphrase",
+			"method":"GET",
+			"body_file":"passphrase_get.json",
+			"result_status":"200",
+			"result_body":"{\"result:\"passphrase result string\"}"
+	},
+	"test passphrase failed parameter":{
+			"uri":"/api/passphrase",
+			"method":"GET",
+			"body_file":"passphrase_get_failed.json",
+			"result_status":"500"
+	},
+	"test passphrase POST":{
+			"uri":"/api/passphrase",
+			"method":"POST",
+			"result_status":"405"
+	},
+	"test passphrase PUT":{
+			"uri":"/api/passphrase",
+			"method":"PUT",
+			"result_status":"405"
+	},
+	"test passphrase DELETE":{
+			"uri":"/api/passphrase",
+			"method":"DELETE",
+			"result_status":"405"
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"title":"test message",
+	"keyphrase":"test keyphrase",
+	"algorithm":"sha512",
+	"seed":"test seed value"
+}
