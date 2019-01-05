@@ -5,18 +5,57 @@ import (
     "io"
     "github.com/labstack/echo"
     "github.com/labstack/echo/middleware"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+	"sync"
 )
 
 type Template struct {
 }
 
-// Render はHTMLテンプレートにデータを埋め込んだ結果をWriterに書き込みます。
+// Render is in echo.Context input parameter
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
     return controller.ExecTemplates(w, name, data)
 }
 
+var e *echo.Echo
+// exit signal handler
+func SignalHandler(doneCh chan struct{}) {
+	//set signal channel
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh,
+		syscall.SIGTERM,
+ 		syscall.SIGINT)
+	defer signal.Stop(sigCh)
+	for {
+		select {
+			case <-sigCh:
+				//send exit by using 
+				//fmt.Printf("receive signal\n")
+				e.Close()
+			case <-doneCh:
+				//fmt.Printf("receive doneCh\n")
+				close(sigCh)
+				return;
+		}
+	}
+}
+
 func main() {
-    e := echo.New()
+    e = echo.New()
+
+	//create wait group to sync signal handler
+	wg := sync.WaitGroup{}
+	doneCh := make(chan struct{}, 1)
+
+	//signal handler
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		SignalHandler(doneCh)
+	}()
 
     // set renderer to use html template file
     t := &Template{}
@@ -52,12 +91,15 @@ func main() {
 		}
 	}
 	e.GET("/", controller.NoAuthenticate(controller.HandleIndex))
-
-    // サーバーを開始
-    e.Logger.Fatal(e.Start(":3000"))
+	e.Start(":3300")
+	fmt.Printf("Exit server\n")
+	//send message to done channel
+	doneCh <- struct{}{}
+	wg.Wait()
+	close(doneCh)
 }
 
-// 初期化を行います。
+//load template
 func init() {
 	controller.LoadTemplates()
 }

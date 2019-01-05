@@ -13,7 +13,7 @@ var templates map[string]*template.Template
 type Template struct {
 }
 
-// 各HTMLテンプレートに共通レイアウトを適用した結果を保存します（初期化時に実行）。
+// store template file in templates map
 func LoadTemplates() {
 	templates = make(map[string]*template.Template)
 	templates["indexs"] = template.Must(
