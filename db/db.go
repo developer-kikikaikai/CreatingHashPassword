@@ -2,7 +2,7 @@ package db
 
 import (
 	"errors"
-	"fmt"
+	_ "fmt"
 	"database/sql"
 	"encoding/json"
 	"io/ioutil"
@@ -53,7 +53,7 @@ func sql_command(query string) ([]map[string]string,error) {
 	defer db.Close()//close after return
 
 	var results []map[string]string = make([]map[string]string, 0)
-	fmt.Printf("query:%s\n", query)
+	//fmt.Printf("query:%s\n", query)
 	rows, err := db.Query(query)
 	if err != nil {
 		return results, errors.New("failed to call query")

@@ -5,13 +5,13 @@ import (
 	"github.com/labstack/echo"
 	"github.com/abbot/go-http-auth"
 	"../db"
-	"fmt"
+	_ "fmt"
 )
 
 func authenticate(user, realm string) string {
 	account, err := db.GetAccount(user)
 	if err == nil {
-		fmt.Printf("%v\n", account)
+		//fmt.Printf("%v\n", account)
 		return account.Passphrase
 	}
 	return ""

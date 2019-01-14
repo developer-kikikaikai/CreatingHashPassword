@@ -9,14 +9,15 @@ import (
 )
 
 type HandlePassphrase struct {
-	Title string `json:"title" form:"title" query:"title"`
-	Keyphrase string `json:"keyphrase" form:"keyphrase" query:"keyphrase"`
-	Algorithm string `json:"algorithm" form:"algorithm" query:"algorithm"`
-	Seed string `json:"seed" form:"seed" query:"seed"`
+	//It's ok not to use `json:"title" form:"title" query:"title"` information if member name is same
+	Title string
+	Keyphrase string
+	Algorithm string
+	Seed string
 }
 
-type responseBody struct {
-	result string `json:"result" from:"result" query:"result"`
+type PassphraseResponseBody struct {
+	Result string `json:"result" from:"result" query:"result"`
 }
 
 func (this *HandlePassphrase) GetHandlerFunc(method Method) AuthHandlerFunc {
@@ -28,17 +29,17 @@ func (this *HandlePassphrase) GetHandlerFunc(method Method) AuthHandlerFunc {
 }
 
 func (this *HandlePassphrase) post(c echo.Context, r *auth.AuthenticatedRequest) error {
-	res := new(responseBody)
+	res := new(PassphraseResponseBody)
 	//parse json format
 	req_body := new(HandlePassphrase)
 	if err := c.Bind(req_body); err != nil {
-		res.result = "HandlePassphrase.post Bind error"
+		res.Result = "HandlePassphrase.post Bind error"
 		return c.JSON(http.StatusInternalServerError, res)
 	}
 
 	//create result
-	res.result = hash.HashSum(req_body.Algorithm, req_body.Title + req_body.Keyphrase + req_body.Seed)
-	if res.result != "" {
+	res.Result = hash.HashSum(req_body.Algorithm, req_body.Title + req_body.Keyphrase + req_body.Seed)
+	if res.Result != "" {
 		return c.JSON(http.StatusOK, res)
 	} else {
 		return c.JSON(http.StatusBadRequest, res)

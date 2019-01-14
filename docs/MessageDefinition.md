@@ -44,17 +44,22 @@ User can store base of generating passphrase information.
 - Response:
 	- HTTP 200 OK if server generate passphrase:
 		```json
-		{
-			"value of title": {
+		[
+			{
+				"title": "title"
 				"algorithm": "generating passphrase algorithm, write hash string",
 				"seed": "seed value of string to generate passphrase"
 			},
 			...
-		}
+		]
 		```
 	- (Other status code if server failed to generate passphrase, not implement)
 
-### POST/PUT /api/passphraseInfo
+### POST /api/passphraseInfo
+
+- Nothing (implement all in PUT)
+
+### PUT /api/passphraseInfo
 
 Create/Update passphraseInformation
 
@@ -62,7 +67,8 @@ Create/Update passphraseInformation
 	- body data is following:
 		```json
 		[
-			"value of title": {
+			{
+				"title": "title"
 				"algorithm": "generating passphrase algorithm, write hash string",
 				"seed": "seed value of string to generate passphrase"
 			},
@@ -75,8 +81,7 @@ Create/Update passphraseInformation
 	- HTTP 200 OK if server success to update (body data is NULL).
 	- Other status code if server failed to generate passphrase, not implement
 		- 400 Bad request
-			- if PUT request and there is no same title's data, and
-			- if POST reqest and there is already created same title's data.
+			- if there is no algorithm.
 
 ### DELETE /api/passphraseInfo
 
@@ -85,15 +90,21 @@ Delete passphraseInformation
 - Request format:
 	- body data is following:
 		```json
-		{
+		[
 			"value of title",
 			...
-		}
+		]
 		```
 	- User autorization is by Digest autorization.
 
 - Response:
-	- HTTP 200 OK if server success to update (body data is NULL).
+	- HTTP 200 OK if server success to update:
+		```json
+		[
+			"deleted title",
+			...
+		]
+		```
 	- Other status code if server failed to generate passphrase, not implement
 		- 400 Bad request
 			- if there is no data.
@@ -160,9 +171,6 @@ Delete UserAccount
 
 - Response:
 	- HTTP 200 OK if server success to update (body data is NULL).
-	- Other status code if server failed to generate passphrase, not implement
-		- 400 Bad request
-			- if there is no user.
 
 - Note:
 	- All of passphrase information which is created by the user are deleted.

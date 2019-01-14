@@ -2,9 +2,9 @@ package main
 
 import (
 	"./controller"
-    "io"
-    "github.com/labstack/echo"
-    "github.com/labstack/echo/middleware"
+	"io"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"fmt"
 	"os"
 	"os/signal"
@@ -17,7 +17,13 @@ type Template struct {
 
 // Render is in echo.Context input parameter
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-    return controller.ExecTemplates(w, name, data)
+	return controller.ExecTemplates(w, name, data)
+}
+
+//request dump
+func bodyDumpHandler(c echo.Context, reqBody, resBody []byte) {
+  fmt.Printf("Request Body: %v\n", string(reqBody))
+  fmt.Printf("Response Body: %v\n", string(resBody))
 }
 
 var e *echo.Echo
@@ -44,7 +50,7 @@ func SignalHandler(doneCh chan struct{}) {
 }
 
 func main() {
-    e = echo.New()
+	e = echo.New()
 
 	//create wait group to sync signal handler
 	wg := sync.WaitGroup{}
@@ -57,13 +63,16 @@ func main() {
 		SignalHandler(doneCh)
 	}()
 
-    // set renderer to use html template file
-    t := &Template{}
-    e.Renderer = t
+	// set renderer to use html template file
+	t := &Template{}
+	e.Renderer = t
 
-    // setup middleware(Todo, search spec of middleware
-    e.Use(middleware.Logger())
-    e.Use(middleware.Recover())
+	// setup middleware(Todo, search spec of middleware
+	//Set Logger if you want to show log
+	e.Use(middleware.Logger())
+	//e.Use(middleware.BodyDump(bodyDumpHandler))
+	//Set Recover if you want to respawn server
+	e.Use(middleware.Recover())
 
 	// regist handler
 	group := e.Group("/api/")
