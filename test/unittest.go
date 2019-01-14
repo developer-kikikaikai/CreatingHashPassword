@@ -22,6 +22,7 @@ func test_HashSum() bool {
 	teststring_hash["black2s_256"]="73fb0bb92d259f9c9b13398aec62c73f204279661ea51b37ab72c11acb27aa3a"
 	teststring_hash["black2s_384"]="9078c57a4ba97ea1b1bbbdc94df0f0cfd64246d154d7bdd730520737f20c970570e4e87ca17799242fa85d0fc63f56a3"
 	teststring_hash["black2s_512"]="eb2c1252ac1d7d684f1b474b207610aa58c62d2b335b9adeac269d4eab5bd2e7bfe2f6a7a51be61b4f55e5c7dfced6922ca66af2f5eddf8d539f4ca1a28c1232"
+	teststring_hash["md5"]="d67c5cbf5b01c9f91932e3b8def5e5f8"
 	teststring_hash["other"]=""
 
 	for alg, result := range teststring_hash {

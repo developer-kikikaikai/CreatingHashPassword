@@ -5,9 +5,11 @@ import (
 	"github.com/labstack/echo"
 	"github.com/abbot/go-http-auth"
 	"../db"
+	"../hash"
 	_ "fmt"
 )
 
+var realm  string = "CreatingHashPassword"
 func authenticate(user, realm string) string {
 	account, err := db.GetAccount(user)
 	if err == nil {
@@ -17,11 +19,15 @@ func authenticate(user, realm string) string {
 	return ""
 }
 
+func GetInsertedPassphrase(user, pass string) string {
+	return hash.HashSum("md5", user + ":" + realm + ":" + pass)
+}
+
 //define authenticator to use all
 var authenticator * auth.DigestAuth = authwrapNewDigestAuthenticator()
 
 func authwrapNewDigestAuthenticator() *auth.DigestAuth {
-	res := auth.NewDigestAuthenticator("CreatingHashPassword", authenticate)
+	res := auth.NewDigestAuthenticator(realm, authenticate)
 	return res
 }
 

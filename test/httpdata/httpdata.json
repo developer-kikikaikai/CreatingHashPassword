@@ -128,5 +128,64 @@
 			"auth":"test:testpass",
 			"result_status":"200",
 			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\"},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\"}]"
+	},
+	"test userAccount POST new info":{
+			"uri":"/api/userAccount",
+			"method":"POST",
+			"body_data":"{\"username\":\"test3\",\"passphrase\":\"testpass3\"}",
+			"result_status":"200",
+			"result_body":""
+	},
+	"test userAccount POST new info twice":{
+			"uri":"/api/userAccount",
+			"method":"POST",
+			"body_data":"{\"username\":\"test3\",\"passphrase\":\"testpass3\"}",
+			"result_status":"400",
+			"result_body":""
+	},
+	"test userAccount PUT exist info":{
+			"uri":"/api/userAccount",
+			"method":"PUT",
+			"auth":"test3:testpass3",
+			"body_data":"{\"passphrase\":\"testpass3_2\"}",
+			"result_status":"200",
+			"result_body":""
+	},
+	"test userAccount PUT change check":{
+			"uri":"/api/userAccount",
+			"method":"PUT",
+			"auth":"test3:testpass3",
+			"body_data":"{\"passphrase\":\"testpass3\"}",
+			"result_status":"401",
+			"result_body":""
+	},
+	"test userAccount PUT change check, success to authorize":{
+			"uri":"/api/userAccount",
+			"method":"PUT",
+			"auth":"test3:testpass3_2",
+			"body_data":"{\"passphrase\":\"testpass3\"}",
+			"result_status":"200",
+			"result_body":""
+	},
+	"test userAccount DELETE":{
+			"uri":"/api/userAccount",
+			"method":"DELETE",
+			"auth":"test3:testpass3",
+			"result_status":"200",
+			"result_body":""
+	},
+	"test userAccount DELETE account check":{
+			"uri":"/api/userAccount",
+			"method":"PUT",
+			"auth":"test3:testpass3",
+			"result_status":"401",
+			"result_body":""
+	},
+	"test userAccount DELETE, check other account":{
+			"uri":"/api/passphraseInfo",
+			"method":"GET",
+			"auth":"test:testpass",
+			"result_status":"200",
+			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\"},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\"}]"
 	}
 }

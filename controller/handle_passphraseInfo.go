@@ -56,8 +56,8 @@ func (this *HandlePassphraseInfo) put(c echo.Context, r *auth.AuthenticatedReque
 	}
 
 	//update/insert DB information
-	dbculumn := db.PassphraseInfo{r.Username, req_body.Title, req_body.Algorithm, req_body.Seed}
-	if result := db.SetPassphraseInfo(dbculumn); !result {
+	dbcolumn := db.PassphraseInfo{r.Username, req_body.Title, req_body.Algorithm, req_body.Seed}
+	if result := db.SetPassphraseInfo(dbcolumn); !result {
 		fmt.Printf("HandlePassphraseInfo.put Failed to insert\n")
 		return c.NoContent(http.StatusInternalServerError)
 	}

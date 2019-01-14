@@ -113,7 +113,7 @@ Delete passphraseInformation
 
 This is for generating/updating/deleting login user account.
 
-### GET /api/userAccount
+### GET/POST /api/userAccount
 
 - Nothing
 
@@ -122,19 +122,20 @@ This is for generating/updating/deleting login user account.
 Create UserAccount
 
 - Request format:
-	- body data is following:
-		```json
-		{
-			"username": "user name information",
-			"passphrase": "passphrase string"
-		}
-		```
+       - body data is following:
+               ```json
+               {
+                       "username": "user name information",
+                       "passphrase": "passphrase string"
+               }
+               ```
 
 - Response:
-	- HTTP 200 OK if server success to update (body data is NULL).
-	- Other status code if server failed to generate passphrase, not implement
-		- 400 Bad request
-			- if there is already used username.
+       - HTTP 200 OK if server success to update (body data is NULL).
+       - Other status code if server failed to generate passphrase, not implement
+               - 400 Bad request
+                       - if there is already used username.
+
 
 ### PUT /api/userAccount
 
@@ -144,7 +145,6 @@ Update UserAccount
 	- body data is following:
 		```json
 		{
-			"username": "user name information",
 			"passphrase": "passphrase string"
 		}
 		```
@@ -161,12 +161,7 @@ Update UserAccount
 Delete UserAccount
 
 - Request format:
-	- body data is following:
-		```json
-		{
-			"username": "user name information",
-		}
-		```
+	- no body data
 	- User autorization is by Digest autorization.
 
 - Response:
