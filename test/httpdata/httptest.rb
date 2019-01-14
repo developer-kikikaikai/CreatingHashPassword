@@ -15,8 +15,19 @@ mapped = json_str.map do |testtitle, testdata|
 	else
 		body_str=""
 	end
+
+	if testdata.has_key?('auth')
+		result=`cd ../;ruby parse.rb`..split(/\r\n/)
+		puts("result:#{result}")
+		auth_str="--digest --user \"#{result[0]}:#{result[1]}\""
+	else
+		auth_str=""
+	end
+
 	puts("Test:#{testtitle}")
-	result=`curl http://localhost:3300#{testdata['uri']} -w 'http_code:%{http_code}\n' -X #{testdata['method']} #{body_str} 2> /dev/null`.split(/http_code:/)
+	puts("curl http://192.168.1.103:60080#{testdata['uri']} -w 'http_code:%{http_code}\n' -X #{testdata['method']} #{body_str} 2> /dev/null")
+	result=`curl http://192.168.1.103:60080#{testdata['uri']} -w 'http_code:%{http_code}\n' -X #{testdata['method']} #{body_str} 2> /dev/null`.split(/http_code:/)
+	puts(result.to_s)
 	#result 0=>body, 1=>status code
 	if result[INDEX_STATUS_CODE].to_i != testdata['result_status'].to_i
 		puts("Failed to check status code, expected_value:#{testdata['result_status']}, result:#{result[INDEX_STATUS_CODE]}")

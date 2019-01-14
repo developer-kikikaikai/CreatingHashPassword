@@ -6,7 +6,7 @@ All of request/response format  are JSON
 
 This is for generating passphrase.
 
-### GET /api/passphrase
+### POST /api/passphrase
 
 - Request format:
 	```json
@@ -29,7 +29,7 @@ This is for generating passphrase.
 
 ### Others
 
-- POST/PUT/DELETE api/passphrase are Nothing
+- GET/PUT/DELETE api/passphrase are Nothing
 
 ## passphraseInformation /api/passphraseInfo
 
@@ -39,7 +39,6 @@ User can store base of generating passphrase information.
 ### GET /api/passphraseInfo
 
 - Request format:
-	- body data is NULL
 	- User autorization is by Digest autorization.
 
 - Response:

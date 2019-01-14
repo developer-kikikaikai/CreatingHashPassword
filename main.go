@@ -91,7 +91,7 @@ func main() {
 		}
 	}
 	e.GET("/", controller.NoAuthenticate(controller.HandleIndex))
-	e.Start(":3300")
+	e.Start(":60080")
 	fmt.Printf("Exit server\n")
 	//send message to done channel
 	doneCh <- struct{}{}
