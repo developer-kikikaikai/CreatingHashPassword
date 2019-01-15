@@ -32,4 +32,7 @@ func HandleIndex(c echo.Context, r *auth.AuthenticatedRequest) error{
     return c.Render(http.StatusOK, "indexs", data)
 }
 
-
+func SetStatic(e *echo.Echo) {
+	e.Static("js", "templates/js")
+	e.Static("images", "templates/images")
+}
