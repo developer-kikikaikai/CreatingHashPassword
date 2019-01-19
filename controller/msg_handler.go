@@ -24,7 +24,7 @@ type MsgHandler interface {
 
 //return: map[uri]MsgHandler
 func MsgHandlerFactory() map[string]MsgHandler {
-	var results map[string]MsgHandler = map[string]MsgHandler{"passphrase":&HandlePassphrase{}, "passphraseInfo":&HandlePassphraseInfo{}, "userAccount":&HandleUserAccount{}}
+	var results map[string]MsgHandler = map[string]MsgHandler{"passphrase":&HandlePassphrase{}, "passphraseInfo":&HandlePassphraseInfo{}, "userAccount":&HandleUserAccount{}, "logout":&HandleLogout{}}
 	return results
 }
 

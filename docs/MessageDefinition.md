@@ -169,3 +169,16 @@ Delete UserAccount
 
 - Note:
 	- All of passphrase information which is created by the user are deleted.
+
+## Logout
+
+There is no "Login/Logout" design in HTTP digest authorization.
+So user can use this api to remove login information from browser.
+
+### GET /api/logout
+
+- Request format:
+	no body data
+
+- Response
+	- HTTP 401 Unauthorized
