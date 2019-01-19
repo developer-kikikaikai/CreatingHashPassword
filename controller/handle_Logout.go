@@ -7,16 +7,10 @@ import (
 )
 
 type HandleLogout struct {
+	MsgHandler
 }
 
-func (this *HandleLogout) GetHandlerFunc(method Method) AuthHandlerFunc {
-	switch method {
-	case METHOD_GET: return this.get
-	default: return nil
-	}
-}
-
-func (this *HandleLogout) get(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandleLogout) Get(c echo.Context, r *auth.AuthenticatedRequest) error {
 	return c.NoContent(http.StatusUnauthorized)
 }
 

@@ -78,27 +78,12 @@ func main() {
 	group := e.Group("/api/")
 	msg_handler := controller.MsgHandlerFactory()
 	for uri, instance := range msg_handler {
-		//Set method GET
-		if handler_fnc := controller.GetEchoHandler(instance, controller.METHOD_GET); handler_fnc != nil {
-			//store URI
-			group.GET(uri, handler_fnc)
-		}
-
-		if handler_fnc := controller.GetEchoHandler(instance, controller.METHOD_POST); handler_fnc != nil {
-			//store URI
-			group.POST(uri, handler_fnc)
-		}
-
-		if handler_fnc := controller.GetEchoHandler(instance, controller.METHOD_PUT); handler_fnc != nil {
-			//store URI
-			group.PUT(uri, handler_fnc)
-		}
-
-		if handler_fnc := controller.GetEchoHandler(instance, controller.METHOD_DELETE); handler_fnc != nil {
-			//store URI
-			group.DELETE(uri, handler_fnc)
-		}
+		group.GET(uri, controller.GetEchoHandler(instance, instance.Get, controller.METHOD_GET))
+		group.POST(uri, controller.GetEchoHandler(instance, instance.Post, controller.METHOD_POST))
+		group.PUT(uri, controller.GetEchoHandler(instance, instance.Put, controller.METHOD_PUT))
+		group.DELETE(uri, controller.GetEchoHandler(instance, instance.Delete, controller.METHOD_DELETE))
 	}
+
 	e.GET("/", controller.NoAuthenticate(controller.HandleIndex))
 	controller.SetStatic(e)
 	e.Start(":60080")

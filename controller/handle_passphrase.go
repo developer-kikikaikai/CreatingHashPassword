@@ -9,6 +9,7 @@ import (
 )
 
 type HandlePassphrase struct {
+	MsgHandler
 	//It's ok not to use `json:"title" form:"title" query:"title"` information if member name is same
 	Title string
 	Keyphrase string
@@ -20,15 +21,7 @@ type PassphraseResponseBody struct {
 	Result string `json:"result" from:"result" query:"result"`
 }
 
-func (this *HandlePassphrase) GetHandlerFunc(method Method) AuthHandlerFunc {
-	if method == METHOD_POST {
-		return this.post
-	} else {
-		return nil
-	}
-}
-
-func (this *HandlePassphrase) post(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandlePassphrase) Post(c echo.Context, r *auth.AuthenticatedRequest) error {
 	res := new(PassphraseResponseBody)
 	//parse json format
 	req_body := new(HandlePassphrase)

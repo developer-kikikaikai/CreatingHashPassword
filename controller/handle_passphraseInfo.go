@@ -10,6 +10,7 @@ import (
 )
 
 type HandlePassphraseInfo struct {
+	MsgHandler
 }
 
 type PartOfPassphraseInfo struct {
@@ -18,16 +19,7 @@ type PartOfPassphraseInfo struct {
 	Seed string `json:"seed" form:"seed" query:"seed"`
 }
 
-func (this *HandlePassphraseInfo) GetHandlerFunc(method Method) AuthHandlerFunc {
-	switch method {
-	case METHOD_GET: return this.get
-	case METHOD_PUT: return this.put
-	case METHOD_DELETE: return this.deleteMethod
-	default: return nil
-	}
-}
-
-func (this *HandlePassphraseInfo) get(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandlePassphraseInfo) Get(c echo.Context, r *auth.AuthenticatedRequest) error {
 	var res []PartOfPassphraseInfo
 	//get request
 	passphrases, err := db.GetAllPassphrase(r.Username)
@@ -47,7 +39,7 @@ func (this *HandlePassphraseInfo) get(c echo.Context, r *auth.AuthenticatedReque
 	return c.JSON(http.StatusOK, res)
 }
 
-func (this *HandlePassphraseInfo) put(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandlePassphraseInfo) Put(c echo.Context, r *auth.AuthenticatedRequest) error {
 	//parse request body
 	req_body := new(PartOfPassphraseInfo)
 	if err := c.Bind(req_body); err != nil {
@@ -65,7 +57,7 @@ func (this *HandlePassphraseInfo) put(c echo.Context, r *auth.AuthenticatedReque
 	return c.NoContent(http.StatusOK)
 }
 
-func (this *HandlePassphraseInfo) deleteMethod(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandlePassphraseInfo) Delete(c echo.Context, r *auth.AuthenticatedRequest) error {
 	//parse request body
 	//var req_body []string = make([]string, 0)
 	var req_body []string
@@ -84,5 +76,9 @@ func (this *HandlePassphraseInfo) deleteMethod(c echo.Context, r *auth.Authentic
 
 //always need authorization
 func (this *HandlePassphraseInfo) DoesNeedAuthenticate(method Method) bool {
-	return true
+	if method  == METHOD_POST {
+		return false
+	} else {
+		return true
+	}
 }

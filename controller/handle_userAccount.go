@@ -9,20 +9,12 @@ import (
 )
 
 type HandleUserAccount struct {
+	MsgHandler
 	Username string
 	Passphrase string
 }
 
-func (this *HandleUserAccount) GetHandlerFunc(method Method) AuthHandlerFunc {
-	switch method {
-	case METHOD_POST: return this.post
-	case METHOD_PUT: return this.put
-	case METHOD_DELETE: return this.delete
-	default: return nil
-	}
-}
-
-func (this *HandleUserAccount) post(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandleUserAccount) Post(c echo.Context, r *auth.AuthenticatedRequest) error {
 	//parse request body
 	req_body := new(HandleUserAccount)
 	if err := c.Bind(req_body); err != nil {
@@ -44,7 +36,7 @@ func (this *HandleUserAccount) post(c echo.Context, r *auth.AuthenticatedRequest
 	return c.NoContent(http.StatusOK)
 }
 
-func (this *HandleUserAccount) put(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandleUserAccount) Put(c echo.Context, r *auth.AuthenticatedRequest) error {
 	//parse request body
 	req_body := new(HandleUserAccount)
 	if err := c.Bind(req_body); err != nil {
@@ -61,7 +53,7 @@ func (this *HandleUserAccount) put(c echo.Context, r *auth.AuthenticatedRequest)
 	return c.NoContent(http.StatusOK)
 }
 
-func (this *HandleUserAccount) delete(c echo.Context, r *auth.AuthenticatedRequest) error {
+func (this *HandleUserAccount) Delete(c echo.Context, r *auth.AuthenticatedRequest) error {
 	db.DeleteAccount(r.Username)
 	return c.NoContent(http.StatusOK)
 }
