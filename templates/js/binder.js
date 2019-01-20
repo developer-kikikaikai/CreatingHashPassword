@@ -30,6 +30,7 @@ $(document).on('click', '[id="SubmitGeneratePassphrase"]', function(){
 function savePassphraseInfo_resolved(result) {
 	alert("Success to save passphrase setting")
 }
+
 function savePassphraseInfo_reject(result) {
 	alert(result)
 }
@@ -87,7 +88,23 @@ $(document).on('click', '[id="SubmitDeleteUser_In_UpdateUser"]', function(){
 /*****************************/
 //Get setting event
 function getPassphraseInfo_resolved(result) {
-	alert("Success to update passphrase setting")
+	$("#user_passphrase_settings_In_PassphraseSettings").empty()
+	result.forEach(function(item, index, array) {
+		title_id = item.title + '_In_PassphraseSetting'
+		algorithm_id = 'Algorithm_Of_' + item.title + 'In_PassphraseSetting'
+		extra_id = 'ExtraInfo_Of_' + item.title + '_In_PassphraseSetting'
+		html = '<tr><td algorithm="'+item.algorithm+'" extra="' +item.seed+ '" id="' + title_id + '"> '+ item.title + '</td>'
+		$("#user_passphrase_settings_In_PassphraseSettings").append(html)
+
+		//add event
+		$(document).on('click', '[id="' + title_id + '"]', function(event) {
+			title = event.currentTarget.innerText
+			document.getElementById('title_In_PassphraseInformation').value = title
+			title_element = document.getElementById(title + '_In_PassphraseSetting')
+			document.getElementById('algorithmSelect_In_PassphraseInformation').value = title_element.getAttribute('algorithm')
+			document.getElementById('extraInfo_In_PassphraseInformation').value = title_element.getAttribute('extra')
+		});
+	})
 }
 function getPassphraseInfo_reject(result) {
 	alert(result)

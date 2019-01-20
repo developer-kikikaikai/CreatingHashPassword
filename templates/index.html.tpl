@@ -89,18 +89,15 @@
             <thead>
               <th scope="col">Passphrase Settings</th>
             </thead>
+            <button type="submit" class="btn btn-primary" id="SubmitGetSetting_In_PassphraseSettings" >Get setting</button>
             <tbody id="user_passphrase_settings_In_PassphraseSettings">
               <!-- ここも設定一覧で収める。ただしユーザー毎に設定値が異なるので、jsで取得させる-->
-              <!--
-              <tr><td>Column content</td></tr>
-              <tr><td>Column content</td></tr>
-              <tr><td>Column content</td></tr>
-              <tr><td>Column content</td></tr>
-              <tr><td>Column content</td></tr>
-              <tr><td>Column content</td></tr>
-              -->
+              <!--<tr>
+                <td id=XXX_In_PassphraseSetting>Column content</td>
+                <td hidden id=Algorithm_Of_XXX_In_PassphraseSetting>alg</td>
+                <td hidden id=ExtraInfo_Of_XXX_In_PassphraseSetting>
+              </tr>-->
             </tbody>
-            <button type="submit" class="btn btn-primary" id="SubmitGetSetting_In_PassphraseSettings" >Get setting</button>
           </table>
         </div><!--<div class="card"> card for  passphrase information-->
       </div><!--<div class="card"> card for  passphrase information-->
