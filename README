@@ -1,0 +1,39 @@
+## setup
+
+1. install go and mysql
+
+```
+
+yum install -y golang
+```
+
+2. install some golang package
+
+```
+go get  github.com/labstack/echo/
+go install crypto
+go get -u golang.org/x/sys
+go get abbot
+go get github.com/abbot/go-http-auth
+go get github.com/go-sql-driver/mysql
+go get github.com/dgrijalva/jwt-go
+```
+
+3. initialize DB
+
+```
+yum --disablerepo=mariadb-main install mariadb-server
+systemctl enable mariadb
+systemctl start mariadb
+mysql_secure_installation
+```
+
+4. create DB
+
+Update db setting json file, and write password.
+And install ruby (only parse DB setting, it's better to write golang), and call ./install_db.sh
+
+```
+cd db
+./install_db.sh
+```
