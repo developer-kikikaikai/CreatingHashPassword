@@ -15,6 +15,8 @@ type HandlePassphrase struct {
 	Keyphrase string
 	Algorithm string
 	Seed string
+	Length int
+	DisableSymbol bool `json:"disable_symbol" form:"disable_symbol" query:"disable_symbol"`
 }
 
 type PassphraseResponseBody struct {

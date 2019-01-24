@@ -22,6 +22,8 @@ type PassphraseInfo struct {
 	Title string
 	Algorithm string
 	Seed string
+	Length string
+	DisableSymbol string
 }
 
 //define to read json setting, parameter have to define public
@@ -52,7 +54,7 @@ func sql_command(query string) ([]map[string]string,error) {
 	}
 	defer db.Close()//close after return
 
-	var results []map[string]string = make([]map[string]string, 0)
+	results := make([]map[string]string, 0)
 	//fmt.Printf("query:%s\n", query)
 	rows, err := db.Query(query)
 	if err != nil {
@@ -131,27 +133,34 @@ func DeleteAccount(username string) bool {
 	return err == nil
 }
 
+func passphraseResult(res *map[string]string) PassphraseInfo{
+	result := PassphraseInfo{"","","","","0","false"}
+	result.Username = (*res)["username"]
+	result.Title = (*res)["title"]
+	result.Algorithm = (*res)["algorithm"]
+	result.Seed = (*res)["seed"]
+	result.Length = (*res)["length"]
+	result.DisableSymbol = (*res)["disable_symbol"]
+	return result
+}
+
 func GetAllPassphrase(username string) ([]PassphraseInfo, error) {
-	var results []PassphraseInfo = make([]PassphraseInfo, 0)
+	//var results []PassphraseInfo = make([]PassphraseInfo, 0)
+	results := make([]PassphraseInfo, 0)
 	res , err := sql_command("SELECT * FROM " + pass_tbl + " WHERE username='" + username + "'")
 	if err != nil {
 		return results, err
 	}
 
 	for i := 0; i < len(res); i++  {
-		result := PassphraseInfo{"","","",""}
-		result.Username = res[i]["username"]
-		result.Title = res[i]["title"]
-		result.Algorithm = res[i]["algorithm"]
-		result.Seed = res[i]["seed"]
+		result := passphraseResult(&res[i])
 		results = append(results, result)
 	}
 	return results, nil
 }
 
 func GetPassphraseInfo(username string, title string) (PassphraseInfo,error) {
-	var result PassphraseInfo =PassphraseInfo{"","","",""}
-
+	result := PassphraseInfo{"","","","","0","false"}
 	res, err:= sql_command("SELECT * FROM " + pass_tbl + " WHERE username='" + username + "' and title='" + title + "'")
 	if err != nil {
 		return result, err
@@ -161,10 +170,7 @@ func GetPassphraseInfo(username string, title string) (PassphraseInfo,error) {
 		return result, errors.New("No passphrase")
 	}
 
-	result.Username = res[0]["username"]
-	result.Title = res[0]["title"]
-	result.Algorithm = res[0]["algorithm"]
-	result.Seed = res[0]["seed"]
+	result = passphraseResult(&res[0])
 	return result, nil
 }
 
@@ -172,10 +178,10 @@ func SetPassphraseInfo(info PassphraseInfo) bool {
 	res, err := GetPassphraseInfo(info.Username, info.Title)
 	if res.Username != info.Username || err != nil {
 		//insert data
-		_,err = sql_command("INSERT INTO " + pass_tbl + " value('" + info.Username + "', '" + info.Algorithm + "', '" + info.Seed + "', '" + info.Title + "')")
+		_,err = sql_command("INSERT INTO " + pass_tbl + " value('" + info.Username + "', '" + info.Algorithm + "', '" + info.Seed + "', '"  + info.Length + "', '" + info.DisableSymbol + "', '" + info.Title + "')")
 	} else {
 		//update data
-		_, err = sql_command("UPDATE " + pass_tbl + " SET algorithm='" + info.Algorithm + "', seed='" + info.Seed + "' WHERE username='" + info.Username + "' and title='" + info.Title + "'")
+		_, err = sql_command("UPDATE " + pass_tbl + " SET algorithm='" + info.Algorithm + "', seed='" + info.Seed + "', length='"  + info.Length + "', disable_symbol='" + info.DisableSymbol + "' WHERE username='" + info.Username + "' and title='" + info.Title + "'")
 	}
 	return err == nil
 }

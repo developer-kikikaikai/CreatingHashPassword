@@ -85,15 +85,15 @@ func test_GetAllPassphrase() bool {
 	}
 
 	if res[0].Algorithm != "sha256" {
-		result1 := (res[0].Username != "test" || res[0].Title != "testtitle2" ||  res[0].Algorithm != "sha512" || res[0].Seed != "seed2" )
-		result2 := (res[1].Username != "test" || res[1].Title != "testtitle1" ||  res[1].Algorithm != "sha256" || res[1].Seed != "seed1" )
+		result1 := (res[0].Username != "test" || res[0].Title != "testtitle2" ||  res[0].Algorithm != "sha512" || res[0].Seed != "seed2" || res[0].Length != "32" || res[0].DisableSymbol != "false" )
+		result2 := (res[1].Username != "test" || res[1].Title != "testtitle1" ||  res[1].Algorithm != "sha256" || res[1].Seed != "seed1" || res[1].Length !="64" || res[1].DisableSymbol != "true")
 		if result1 && result2 {
 			fmt.Printf("Failed to get GetAllPassphrase without data\n")
 			return false
 		}
 	} else {
-		result1 := (res[1].Username != "test" || res[1].Title != "testtitle2" ||  res[1].Algorithm != "sha512" || res[1].Seed != "seed2" )
-		result2 := (res[0].Username != "test" || res[0].Title != "testtitle1" ||  res[0].Algorithm != "sha256" || res[0].Seed != "seed1" )
+		result1 := (res[1].Username != "test" || res[1].Title != "testtitle2" ||  res[1].Algorithm != "sha512" || res[1].Seed != "seed2" || res[1].Length != "32" || res[1].DisableSymbol != "false")
+		result2 := (res[0].Username != "test" || res[0].Title != "testtitle1" ||  res[0].Algorithm != "sha256" || res[0].Seed != "seed1" || res[0].Length !="64" || res[0].DisableSymbol != "true" )
 		if result1 && result2 {
 			fmt.Printf("Failed to get GetAllPassphrase without data\n")
 			return false
@@ -111,7 +111,7 @@ func test_GetPassphraseInfo() bool {
 	}
 
 	res, err = db.GetPassphraseInfo("test", "testtitle1")
-	result1 := (res.Username != "test" || res.Title != "testtitle1" ||  res.Algorithm != "sha256" || res.Seed != "seed1" )
+	result1 := (res.Username != "test" || res.Title != "testtitle1" ||  res.Algorithm != "sha256" || res.Seed != "seed1" || res.Length != "64" || res.DisableSymbol != "true")
 	if result1 || err != nil{
 		fmt.Printf("Failed to get GetPassphraseInfo with testtitle1\n")
 		return false
@@ -170,14 +170,14 @@ func test_DeleteAccount() bool{
 
 func test_SetPassphraseInfo() bool {
 	//add
-	passphrase := db.PassphraseInfo{"test", "newalgorithm", "newseed", "newtitle"}
+	passphrase := db.PassphraseInfo{"test", "newalgorithm", "newseed", "newtitle", "10", "true"}
 	if !db.SetPassphraseInfo(passphrase) {
-		fmt.Printf("Failed to set New account newuser\n")
+		fmt.Printf("Failed to set New passphraseInfo\n")
 		return false
 	}
 
 	res, err := db.GetPassphraseInfo(passphrase.Username, passphrase.Title)
-	if res.Username != passphrase.Username || res.Title != passphrase.Title || res.Algorithm != passphrase.Algorithm || res.Seed != passphrase.Seed || err != nil {
+	if res.Username != passphrase.Username || res.Title != passphrase.Title || res.Algorithm != passphrase.Algorithm || res.Seed != passphrase.Seed || res.Length != passphrase.Length || res.DisableSymbol != passphrase.DisableSymbol || err != nil {
 		fmt.Printf("Failed to check New passphrase info (newtitle)\n")
 		return false
 	}
@@ -190,7 +190,7 @@ func test_SetPassphraseInfo() bool {
 	}
 
 	res, err = db.GetPassphraseInfo(passphrase.Username, passphrase.Title)
-	if res.Username != passphrase.Username || res.Title != passphrase.Title || res.Algorithm != passphrase.Algorithm || res.Seed != passphrase.Seed || err != nil{
+	if res.Username != passphrase.Username || res.Title != passphrase.Title || res.Algorithm != passphrase.Algorithm || res.Seed != passphrase.Seed || res.Length != passphrase.Length || res.DisableSymbol != passphrase.DisableSymbol || err != nil{
 		fmt.Printf("Failed to check New passphrase info (newtitle)\n")
 		return false
 	}

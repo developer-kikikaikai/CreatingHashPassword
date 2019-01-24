@@ -50,6 +50,8 @@ CREATE TABLE `passphrase_tbl` (
   `username` varchar(50) NOT NULL,
   `algorithm` varchar(50) NOT NULL,
   `seed` varchar(129) DEFAULT NULL,
+  `length` varchar(3) NOT NULL DEFAULT '0',
+  `disable_symbol` varchar(5) NOT NULL DEFAULT 'false',
   `title` varchar(50) NOT NULL,
   KEY `username` (`username`),
   CONSTRAINT `passphrase_tbl_ibfk_1` FOREIGN KEY (`username`) REFERENCES `account_tbl` (`username`) ON DELETE CASCADE
