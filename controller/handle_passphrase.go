@@ -35,6 +35,8 @@ func (this *HandlePassphrase) Post(c echo.Context, r *auth.AuthenticatedRequest)
 	//create result
 	res.Result = hash.HashSum(req_body.Algorithm, req_body.Title + req_body.Keyphrase + req_body.Seed)
 	if res.Result != "" {
+		scaleDownDenominator := len(res.Result)/req_body.Length
+		res.Result = hash.CompressHash(res.Result, scaleDownDenominator, !req_body.DisableSymbol);
 		return c.JSON(http.StatusOK, res)
 	} else {
 		return c.JSON(http.StatusBadRequest, res)

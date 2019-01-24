@@ -15,7 +15,7 @@ import (
 //define function type
 var hash_algorithms map[string]func(string) string = map[string]func(string) string{"sha256":sha256sum,"sha384":sha384sum,"sha512":sha512sum,"ripemd160":ripemd160sum,"sha3_224":sha3sha224sum,"sha3_256":sha3sha256sum,"sha3_384":sha3sha384sum,"sha3_512":sha3sha512sum,"sha512_224":sha512_224sum,"sha512_256":sha512_256sum,"black2s_256":black2s_256sum,"black2s_384":black2b_384sum,"black2s_512":black2b_512sum,"md5":md5sum}
 
-var hash_blacklist map[string]string = map[string]string{"md5":""}
+var hash_blacklist map[string]string = map[string]string{"md5":"","ripemd160":"", "sha3_224":"", "sha512_224":""}
 
 func sha256sum(data string) string {
 	bytes := sha256.Sum256([] byte(data))
