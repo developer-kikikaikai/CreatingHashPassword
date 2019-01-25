@@ -42,6 +42,23 @@
             <label for="extraInfo">extra Info</label>
             <input type="text" class="form-control" id="extraInfo_In_PassphraseInformation" aria-describedby="extraInfo to get new passphrase string" placeholder="Enter extra info if you want">
           </div>
+          <div class="form-group">
+            <label for="length">max length</label>
+            <select type="number" class="form-control" id="maxLength_In_PassphraseInformation" aria-describedby="max length of new passphrase string">
+				<!--
+				<option>128</option>
+				<option>64</option>
+				<option>56</option>
+				<option>40</option>
+				<option>32</option>
+				<option>24</option>
+				<option>16</option>
+				-->
+			</select>
+          </div>
+          <div class="form-group">
+            <label><input type="checkbox" name="UseSymbol_In_PassphraseInformation" value="true" id="UseSymbol_In_PassphraseInformation">Use symbol in password</label>
+          </div>
           <button type="submit" class="btn btn-primary" id="SubmitGeneratePassphrase">Generate passphrase</button>
           <button type="submit" class="btn btn-primary" id="SubmitSaveSetting"  >Save setting</button>
         </div><!--class="card-body-->
@@ -93,9 +110,7 @@
             <tbody id="user_passphrase_settings_In_PassphraseSettings">
               <!-- ここも設定一覧で収める。ただしユーザー毎に設定値が異なるので、jsで取得させる-->
               <!--<tr>
-                <td id=XXX_In_PassphraseSetting>Column content</td>
-                <td hidden id=Algorithm_Of_XXX_In_PassphraseSetting>alg</td>
-                <td hidden id=ExtraInfo_Of_XXX_In_PassphraseSetting>
+                <td id=XXX_In_PassphraseSetting algorithm=XXX, extra=XXX>Column content</td>
               </tr>-->
             </tbody>
           </table>

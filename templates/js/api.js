@@ -26,7 +26,7 @@ module.exports = class API {
 		});//fetch
 	}
 
-	generatePassphrase(title, keyphrase, algorithm, seed, apires) {
+	generatePassphrase(title, keyphrase, algorithm, seed, length, disable_symbol, apires) {
 		this._sendapi(
 		//1st param
 		this._var_baseurl + 'passphrase',
@@ -41,14 +41,16 @@ module.exports = class API {
 				'title': title,
 				"keyphrase": keyphrase,
 				"algorithm": algorithm,
-				"seed": seed
+				"seed": seed,
+				"length": length,
+				"disable_symbol": disable_symbol
 			})
 		},
 		//3rd param
 		apires);
 	}
 
-	savePassphraseInfo(title, algorithm, seed, apires) {
+	savePassphraseInfo(title, algorithm, seed, length, disable_symbol, apires) {
 		this._sendapi(
 		//1st param
 		this._var_baseurl + 'passphraseInfo',
@@ -63,7 +65,9 @@ module.exports = class API {
 			body: JSON.stringify({
 				'title': title,
 				"algorithm": algorithm,
-				"seed": seed
+				"seed": seed,
+				"length": length,
+				"disable_symbol": disable_symbol
 			})
 		},
 		//3rd param
