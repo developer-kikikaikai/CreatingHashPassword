@@ -275,6 +275,11 @@ $(document).on('click', '[id="SubmitDeleteUser_In_UpdateUser"]', function(){
 //Get setting event
 function getPassphraseInfo_resolved(result) {
 	$("#user_passphrase_settings_In_PassphraseSettings").empty()
+
+	if(!Object.keys(result).length) {
+		return
+	}
+
 	result.forEach(function(item, index, array) {
 		title_id = item.title + '_In_PassphraseSetting'
 		html = '<tr><td algorithm="'+item.algorithm+'" extra="' +item.seed+ '" maxlength="' + item.length + '" disable_symbol="' + item.disable_symbol + '" id="' + title_id + '"> '+ item.title + '</td>'

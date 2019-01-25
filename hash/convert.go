@@ -54,7 +54,6 @@ func initializeHashList() {
 
 type hashTable struct {
 	table []string
-	base_modulo int
 	scaledown int
 }
 
@@ -86,7 +85,6 @@ func generateHashTable(scaleDownDenominator int, useSymbol bool) hashTable {
 	} else {
 		res.table = wordsWithoutSymbol[scaleDownDenominator%2];
 	}
-	res.base_modulo = len(res.table);
 	res.scaledown = scaleDownDenominator
 	return res
 }
