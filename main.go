@@ -70,7 +70,7 @@ func main() {
 	// setup middleware(Todo, search spec of middleware
 	//Set Logger if you want to show log
 	e.Use(middleware.Logger())
-	e.Use(middleware.BodyDump(bodyDumpHandler))
+	//e.Use(middleware.BodyDump(bodyDumpHandler))
 	//Set Recover if you want to respawn server
 	e.Use(middleware.Recover())
 
@@ -86,7 +86,7 @@ func main() {
 
 	e.GET("/", controller.NoAuthenticate(controller.HandleIndex))
 	controller.SetStatic(e)
-	e.Start(":60080")
+	e.StartTLS(":60443", "/etc/letsencrypt/live/server.developerkikikaikaienjoy.work/fullchain.pem", "/etc/letsencrypt/live/server.developerkikikaikaienjoy.work/privkey.pem")
 	fmt.Printf("Exit server\n")
 	//send message to done channel
 	doneCh <- struct{}{}
