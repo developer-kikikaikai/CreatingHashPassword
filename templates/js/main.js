@@ -199,12 +199,12 @@ function generatePassphrase_reject(result) {
 }
 //generate passphrase event
 $(document).on('click', '[id="SubmitGeneratePassphrase"]', function(){
-	var title = document.getElementById('title_In_PassphraseInformation').value
-	var keyphrase = document.getElementById('keyphrase_In_PassphraseInformation').value
-	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseInformation').value
-	var extraInfo = document.getElementById('extraInfo_In_PassphraseInformation').value
-	var length = Number(document.getElementById('maxLength_In_PassphraseInformation').value)
-	var disableSymbol = ($("[name=UseSymbol_In_PassphraseInformation]").prop("checked") != true)
+	var title = document.getElementById('title_In_PassphraseSetting').value
+	var keyphrase = document.getElementById('keyphrase_In_PassphraseSetting').value
+	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseSetting').value
+	var extraInfo = document.getElementById('extraInfo_In_PassphraseSetting').value
+	var length = Number(document.getElementById('maxLength_In_PassphraseSetting').value)
+	var disableSymbol = ($("[name=UseSymbol_In_PassphraseSetting]").prop("checked") != true)
 	api.generatePassphrase(title, keyphrase, algorithmSelect, extraInfo, length, disableSymbol, new APIResult(generatePassphrase_resolved, generatePassphrase_reject));
 });
 
@@ -220,11 +220,11 @@ function savePassphraseInfo_reject(result) {
 }
 //save setting event
 $(document).on('click', '[id="SubmitSaveSetting"]', function(){
-	var title = document.getElementById('title_In_PassphraseInformation').value
-	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseInformation').value
-	var extraInfo = document.getElementById('extraInfo_In_PassphraseInformation').value
-	var length = Number(document.getElementById('maxLength_In_PassphraseInformation').value)
-	var disableSymbol = ($("[name=UseSymbol_In_PassphraseInformation]").prop("checked") != true)
+	var title = document.getElementById('title_In_PassphraseSetting').value
+	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseSetting').value
+	var extraInfo = document.getElementById('extraInfo_In_PassphraseSetting').value
+	var length = Number(document.getElementById('maxLength_In_PassphraseSetting').value)
+	var disableSymbol = ($("[name=UseSymbol_In_PassphraseSetting]").prop("checked") != true)
 	api.savePassphraseInfo(title, algorithmSelect, extraInfo, length, disableSymbol, new APIResult(savePassphraseInfo_resolved, savePassphraseInfo_reject));
 });
 
@@ -238,12 +238,11 @@ function createUser_reject(result) {
 	alert(result)
 }
 //Create user event
-$(document).on('click', '[id="SubmitCreateUser_In_CreateUser"]', function(){
-	var user = document.getElementById('Username_In_CreateUser').value
-	var pass = document.getElementById('LoginPassphrase_In_CreateUser').value
+function createUserEvent() {
+	var user = document.getElementById('Username_In_UserAccount').value
+	var pass = document.getElementById('LoginPassphrase_In_UserAccount').value
 	api.createUser(user, pass, new APIResult(createUser_resolved, createUser_reject))
-});
-
+}
 /*****************************/
 //Update user event
 function updateUser_resolved(result) {
@@ -252,11 +251,11 @@ function updateUser_resolved(result) {
 function updateUser_reject(result) {
 	alert(result)
 }
-//Create user event
-$(document).on('click', '[id="SubmitUpdateUser_In_UpdateUser"]', function(){
-	var pass = document.getElementById('LoginPassphrase_In_UpdateUser').value
+//Update user event
+function updateUserEvent() {
+	var pass = document.getElementById('LoginPassphrase_In_UserAccount').value
 	api.updateUser(pass, new APIResult(updateUser_resolved, updateUser_reject))
-});
+}
 
 /*****************************/
 //Delete user event
@@ -266,11 +265,20 @@ function deleteUser_resolved(result) {
 function deleteUser_reject(result) {
 	alert(result)
 }
-//Create user event
-$(document).on('click', '[id="SubmitDeleteUser_In_UpdateUser"]', function(){
+//Delete user event
+function deleteUserEvent() {
 	api.deleteUser(new APIResult(deleteUser_resolved, deleteUser_reject))
-});
+}
 
+$(document).on('click', '[id="SubmitUser_In_UserAccount"]', function(){
+	if ( $('input[name=SelectOperation_In_UserAccount]:eq(0)').prop('checked') ) {
+		createUserEvent();
+	} else if ($('input[name=SelectOperation_In_UserAccount]:eq(1)').prop('checked')){
+		updateUserEvent();
+	} else {
+		deleteUserEvent();
+	}
+});
 /*****************************/
 //Get setting event
 function getPassphraseInfo_resolved(result) {
@@ -289,12 +297,12 @@ function getPassphraseInfo_resolved(result) {
 		$(document).off('click', '[id="' + title_id + '"]')
 		$(document).on('click', '[id="' + title_id + '"]', function(event) {
 			title = event.currentTarget.innerText
-			document.getElementById('title_In_PassphraseInformation').value = title
+			document.getElementById('title_In_PassphraseSetting').value = title
 			title_element = document.getElementById(title + '_In_PassphraseSetting')
-			document.getElementById('algorithmSelect_In_PassphraseInformation').value = title_element.getAttribute('algorithm')
-			document.getElementById('extraInfo_In_PassphraseInformation').value = title_element.getAttribute('extra')
-			document.getElementById('maxLength_In_PassphraseInformation').value = title_element.getAttribute('maxlength')
-			document.getElementById('UseSymbol_In_PassphraseInformation').checked = (title_element.getAttribute('disable_symbol') != 'true')
+			document.getElementById('algorithmSelect_In_PassphraseSetting').value = title_element.getAttribute('algorithm')
+			document.getElementById('extraInfo_In_PassphraseSetting').value = title_element.getAttribute('extra')
+			document.getElementById('maxLength_In_PassphraseSetting').value = title_element.getAttribute('maxlength')
+			document.getElementById('UseSymbol_In_PassphraseSetting').checked = (title_element.getAttribute('disable_symbol') != 'true')
 		});
 	})
 }
@@ -314,7 +322,7 @@ function logout_resolved(result) {
 function logout_reject(result) {
 }
 //Get setting event
-$(document).on('click', '[id="SubmitLogoutUser_In_UpdateUser"]', function(){
+$(document).on('click', '[id="SubmitLogoutUser_In_UserAccount"]', function(){
 	api.logout(new APIResult(logout_resolved, logout_reject));
 });
 
@@ -338,14 +346,14 @@ function getMaxLength(algorithm) {
 	}
 }
 function updateMaxLengthField() {
-	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseInformation').value
-	$("#maxLength_In_PassphraseInformation").empty()
+	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseSetting').value
+	$("#maxLength_In_PassphraseSetting").empty()
 	getMaxLength(algorithmSelect).forEach(function(length) {
 		var html = "<option>" + length + "</option>"
-		$("#maxLength_In_PassphraseInformation").append(html)
+		$("#maxLength_In_PassphraseSetting").append(html)
 	})
 }
-$(document).on('change', '[id="algorithmSelect_In_PassphraseInformation"]', updateMaxLengthField)
+$(document).on('change', '[id="algorithmSelect_In_PassphraseSetting"]', updateMaxLengthField)
 window.onload = function() {
 	updateMaxLengthField();
 }
