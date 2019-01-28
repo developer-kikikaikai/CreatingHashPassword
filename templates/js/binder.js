@@ -128,20 +128,21 @@ function getPassphraseInfo_reject(result) {
 	alert(result)
 }
 //Get setting event
-$(document).on('click', '[id="SubmitGetSetting_In_PassphraseSettings"]', function(){
+function getPassphraseInfoAction() {
 	api.getPassphraseInfo(new APIResult(getPassphraseInfo_resolved, getPassphraseInfo_reject));
-});
+}
+$(document).on('click', '[id="SubmitGetSetting_In_PassphraseSettings"]', getPassphraseInfoAction);
 
 /*****************************/
 //Get setting event
 function logout_resolved(result) {
-	alert("Success to update passphrase setting")
 }
 function logout_reject(result) {
 }
 //Get setting event
 $(document).on('click', '[id="SubmitLogoutUser_In_UserAccount"]', function(){
 	api.logout(new APIResult(logout_resolved, logout_reject));
+	$("#user_passphrase_settings_In_PassphraseSettings").empty()
 });
 
 /*****************************/
