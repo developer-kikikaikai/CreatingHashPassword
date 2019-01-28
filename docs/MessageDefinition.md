@@ -14,7 +14,9 @@ This is for generating passphrase.
 		"title": "string of this passphrase's title",
 		"keyphrase": "keyphrase string",
 		"algorithm": "generating passphrase algorithm, write hash string",
-		"seed": "seed value of string to generate passphrase"
+		"seed": "seed value of string to generate passphrase",
+		"length": length of generating passphrase
+		"disable_symbol": length of generating passphrase, true or false
 	}
 	```
 
@@ -48,7 +50,9 @@ User can store base of generating passphrase information.
 			{
 				"title": "title"
 				"algorithm": "generating passphrase algorithm, write hash string",
-				"seed": "seed value of string to generate passphrase"
+				"seed": "seed value of string to generate passphrase",
+				"length": length of generating passphrase,
+				"disable_symbol": length of generating passphrase, true or false
 			},
 			...
 		]
@@ -70,7 +74,9 @@ Create/Update passphraseInformation
 			{
 				"title": "title"
 				"algorithm": "generating passphrase algorithm, write hash string",
-				"seed": "seed value of string to generate passphrase"
+				"seed": "seed value of string to generate passphrase",
+				"length": length of generating passphrase,
+				"disable_symbol": length of generating passphrase, true or false
 			},
 			...
 		]

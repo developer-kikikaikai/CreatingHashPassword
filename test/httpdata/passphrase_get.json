@@ -1,6 +1,9 @@
 {
+	"version":"1.0",
 	"title":"test message",
 	"keyphrase":"test keyphrase",
 	"algorithm":"sha512",
-	"seed":"test seed value"
+	"seed":"test seed value",
+	"length":64,
+	"disable_symbol":false
 }

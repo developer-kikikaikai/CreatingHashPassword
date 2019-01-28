@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"../db"
 	"fmt"
+	"strconv"
 )
 
 type HandlePassphraseInfo struct {
@@ -17,6 +18,8 @@ type PartOfPassphraseInfo struct {
 	Title string `json:"title" form:"title" query:"title"`
 	Algorithm string `json:"algorithm" form:"algorithm" query:"algorithm"`
 	Seed string `json:"seed" form:"seed" query:"seed"`
+	Length int `json:"length" form:"length" query:"length"`
+	DisableSymbol bool `json:"disable_symbol" form:"disable_symbol" query:"disable_symbol"`
 }
 
 func (this *HandlePassphraseInfo) Get(c echo.Context, r *auth.AuthenticatedRequest) error {
@@ -30,10 +33,13 @@ func (this *HandlePassphraseInfo) Get(c echo.Context, r *auth.AuthenticatedReque
 
 	//create response data
 	var part PartOfPassphraseInfo
+	var _ error
 	for i := 0; i < len(passphrases); i++ {
 		part.Title = passphrases[i].Title
 		part.Algorithm = passphrases[i].Algorithm
 		part.Seed = passphrases[i].Seed
+		part.Length, _ = strconv.Atoi(passphrases[i].Length)
+		part.DisableSymbol, _ = strconv.ParseBool(passphrases[i].DisableSymbol)
 		res = append(res, part)
 	}
 	return c.JSON(http.StatusOK, res)
@@ -48,7 +54,8 @@ func (this *HandlePassphraseInfo) Put(c echo.Context, r *auth.AuthenticatedReque
 	}
 
 	//update/insert DB information
-	dbcolumn := db.PassphraseInfo{r.Username, req_body.Title, req_body.Algorithm, req_body.Seed}
+	var _ error
+	dbcolumn := db.PassphraseInfo{r.Username, req_body.Title, req_body.Algorithm, req_body.Seed, strconv.Itoa(req_body.Length), strconv.FormatBool(req_body.DisableSymbol)}
 	if result := db.SetPassphraseInfo(dbcolumn); !result {
 		fmt.Printf("HandlePassphraseInfo.put Failed to insert\n")
 		return c.NoContent(http.StatusInternalServerError)

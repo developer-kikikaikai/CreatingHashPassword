@@ -5,7 +5,7 @@
 			"method":"POST",
 			"body_file":"passphrase_get.json",
 			"result_status":"200",
-			"result_body":"{\"result\":\"6ca82b389516390a88573685265f3958fc8960d2089173a13b3503289daab0d0cea7446bc6e45601ce1d425c75c703d90b099f1eb7f3cfb480b06e8b8319760e\"}"
+			"result_body":"{\"result\":\"I)HURmVa8nS5CvVoX9wh8NP\\\"XR3EZ+;fd(4H5zm1dt2sR63ob9zu]Oe?0;Kb3pSe\"}"
 	},
 	"test passphrase failed parameter":{
 			"uri":"/api/passphrase",
@@ -40,7 +40,7 @@
 			"method":"GET",
 			"result_status":"200",
 			"auth":"test:testpass",
-			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\"},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\"}]"
+			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\",\"length\":128,\"disable_symbol\":false}]"
 	},
 	"test get passphraseInfo success unauthorized":{
 			"uri":"/api/passphraseInfo",
@@ -58,7 +58,7 @@
 			"uri":"/api/passphraseInfo",
 			"method":"PUT",
 			"auth":"test2:testpass2",
-			"body_data":"{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\"}",
+			"body_data":"{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true}",
 			"result_status":"200",
 			"result_body":""
 	},
@@ -67,13 +67,13 @@
 			"method":"GET",
 			"auth":"test2:testpass2",
 			"result_status":"200",
-			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\"}]"
+			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true}]"
 	},
 	"test passphraseInfo PUT update info":{
 			"uri":"/api/passphraseInfo",
 			"method":"PUT",
 			"auth":"test2:testpass2",
-			"body_data":"{\"title\":\"testtitle1\",\"algorithm\":\"sha512\",\"seed\":\"seed1\"}",
+			"body_data":"{\"title\":\"testtitle1\",\"algorithm\":\"sha512\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true}",
 			"result_status":"200",
 			"result_body":""
 	},
@@ -82,13 +82,13 @@
 			"method":"GET",
 			"auth":"test2:testpass2",
 			"result_status":"200",
-			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha512\",\"seed\":\"seed1\"}]"
+			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha512\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true}]"
 	},
 	"test passphraseInfo PUT add info 2":{
 			"uri":"/api/passphraseInfo",
 			"method":"PUT",
 			"auth":"test2:testpass2",
-			"body_data":"{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed1\"}",
+			"body_data":"{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed1\",\"length\":128,\"disable_symbol\":false}",
 			"result_status":"200",
 			"result_body":""
 	},
@@ -97,7 +97,7 @@
 			"method":"GET",
 			"auth":"test2:testpass2",
 			"result_status":"200",
-			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha512\",\"seed\":\"seed1\"},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed1\"}]"
+			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha512\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed1\",\"length\":128,\"disable_symbol\":false}]"
 	},
 	"test passphraseInfo DELETE added info":{
 			"uri":"/api/passphraseInfo",
@@ -127,7 +127,7 @@
 			"method":"GET",
 			"auth":"test:testpass",
 			"result_status":"200",
-			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\"},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\"}]"
+			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\",\"length\":128,\"disable_symbol\":false}]"
 	},
 	"test userAccount POST new info":{
 			"uri":"/api/userAccount",
@@ -186,6 +186,6 @@
 			"method":"GET",
 			"auth":"test:testpass",
 			"result_status":"200",
-			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\"},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\"}]"
+			"result_body":"[{\"title\":\"testtitle1\",\"algorithm\":\"sha256\",\"seed\":\"seed1\",\"length\":64,\"disable_symbol\":true},{\"title\":\"testtitle2\",\"algorithm\":\"sha512\",\"seed\":\"seed2\",\"length\":128,\"disable_symbol\":false}]"
 	}
 }
