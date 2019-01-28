@@ -57,7 +57,7 @@
 			</select>
           </div>
           <div class="form-group">
-            <label><input type="checkbox" name="UseSymbol_In_PassphraseInformation" value="true" id="UseSymbol_In_PassphraseInformation">Use symbol in password</label>
+            <label><input type="checkbox" name="UseSymbol_In_PassphraseInformation" value="true" id="UseSymbol_In_PassphraseInformation">Use symbol in passphrase</label>
           </div>
           <button type="submit" class="btn btn-primary" id="SubmitGeneratePassphrase">Generate passphrase</button>
           <button type="submit" class="btn btn-primary" id="SubmitSaveSetting"  >Save setting</button>
