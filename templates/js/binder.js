@@ -10,13 +10,19 @@ var $ = require('jquery');
 //function for generate passphrase
 //result: response json format
 function generatePassphrase_resolved(result) {
-	document.getElementById('result_In_Generated_passphrase').value = result.result
+	var dom = document.getElementById('result_In_Generated_passphrase')
+	var jquery_dom = $("#result_In_Generated_passphrase")
+	if( dom.value != result.result ) {
+	    jquery_dom.hide()
+	    dom.value = result.result
+	    jquery_dom.fadeIn('normal');
+	}
 }
 function generatePassphrase_reject(result) {
 	alert(result)
 }
 //generate passphrase event
-$(document).on('click', '[id="SubmitGeneratePassphrase"]', function(){
+function generatePassphrase(){
 	var title = document.getElementById('title_In_PassphraseSetting').value
 	var keyphrase = document.getElementById('keyphrase_In_PassphraseSetting').value
 	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseSetting').value
@@ -24,12 +30,15 @@ $(document).on('click', '[id="SubmitGeneratePassphrase"]', function(){
 	var length = Number(document.getElementById('maxLength_In_PassphraseSetting').value)
 	var disableSymbol = ($("[name=UseSymbol_In_PassphraseSetting]").prop("checked") != true)
 	api.generatePassphrase(title, keyphrase, algorithmSelect, extraInfo, length, disableSymbol, new APIResult(generatePassphrase_resolved, generatePassphrase_reject));
-});
+}
 
+stoteActiveEvent("SubmitGeneratePassphrase", generatePassphrase);
 /*****************************/
 //function for save setting
 //result: response json format
 function savePassphraseInfo_resolved(result) {
+    //Get settings after save it
+    getPassphraseInfoAction()
 	alert("Success to save passphrase setting")
 }
 
@@ -37,15 +46,16 @@ function savePassphraseInfo_reject(result) {
 	alert(result)
 }
 //save setting event
-$(document).on('click', '[id="SubmitSaveSetting"]', function(){
+function savePassphraseSeedSetting(){
 	var title = document.getElementById('title_In_PassphraseSetting').value
 	var algorithmSelect = document.getElementById('algorithmSelect_In_PassphraseSetting').value
 	var extraInfo = document.getElementById('extraInfo_In_PassphraseSetting').value
 	var length = Number(document.getElementById('maxLength_In_PassphraseSetting').value)
 	var disableSymbol = ($("[name=UseSymbol_In_PassphraseSetting]").prop("checked") != true)
 	api.savePassphraseInfo(title, algorithmSelect, extraInfo, length, disableSymbol, new APIResult(savePassphraseInfo_resolved, savePassphraseInfo_reject));
-});
+}
 
+stoteActiveEvent("SubmitSaveSetting", savePassphraseSeedSetting);
 /*****************************/
 //function for save setting
 //result: response json format
@@ -87,8 +97,7 @@ function deleteUser_reject(result) {
 function deleteUserEvent() {
 	api.deleteUser(new APIResult(deleteUser_resolved, deleteUser_reject))
 }
-
-$(document).on('click', '[id="SubmitUser_In_UserAccount"]', function(){
+function submitUserAccount(){
 	if ( $('input[name=SelectOperation_In_UserAccount]:eq(0)').prop('checked') ) {
 		createUserEvent();
 	} else if ($('input[name=SelectOperation_In_UserAccount]:eq(1)').prop('checked')){
@@ -96,7 +105,8 @@ $(document).on('click', '[id="SubmitUser_In_UserAccount"]', function(){
 	} else {
 		deleteUserEvent();
 	}
-});
+}
+stoteActiveEvent("SubmitUser_In_UserAccount", submitUserAccount);
 /*****************************/
 //Get setting event
 function getPassphraseInfo_resolved(result) {
@@ -131,7 +141,7 @@ function getPassphraseInfo_reject(result) {
 function getPassphraseInfoAction() {
 	api.getPassphraseInfo(new APIResult(getPassphraseInfo_resolved, getPassphraseInfo_reject));
 }
-$(document).on('click', '[id="SubmitGetSetting_In_PassphraseSettings"]', getPassphraseInfoAction);
+stoteActiveEvent("SubmitGetSetting_In_PassphraseSettings", getPassphraseInfoAction);
 
 /*****************************/
 //Get setting event
@@ -139,11 +149,19 @@ function logout_resolved(result) {
 }
 function logout_reject(result) {
 }
-//Get setting event
-$(document).on('click', '[id="SubmitLogoutUser_In_UserAccount"]', function(){
+function logoutUser() {
 	api.logout(new APIResult(logout_resolved, logout_reject));
 	$("#user_passphrase_settings_In_PassphraseSettings").empty()
-});
+}
+stoteActiveEvent("SubmitLogoutUser_In_UserAccount", logoutUser)
+
+//Get setting event
+function stoteActiveEvent(eventId, eventFunc) {
+	$(document).on('click', '[id="' + eventId + '"]', function(){
+		eventFunc()
+		document.activeElement.blur()
+	});
+}
 
 /*****************************/
 //Set select event
