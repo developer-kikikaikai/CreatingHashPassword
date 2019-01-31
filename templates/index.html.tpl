@@ -50,7 +50,7 @@
                 <h4 class="card-title">Passphrase setting</h4>
                 <div class="form-group">
                   <label for="inputTitle">Title</label>
-                  <input type="text" class="form-control" id="title_In_PassphraseSetting" aria-describedby="title" value="Enter title"><!--readonlyかどうかの要素を切り替えるようにしたい。登録済み設定を選択されたらなんやかんや-->
+                  <input type="text" class="form-control" id="title_In_PassphraseSetting" aria-describedby="title" value="Enter title">
                 </div>
                 <div class="form-group">
                   <label for="algorithm">Algorithm select</label>
@@ -67,16 +67,16 @@
                 <div class="form-group">
                   <label for="length">max length</label>
                   <select type="number" class="form-control" id="maxLength_In_PassphraseSetting" aria-describedby="max length of new passphrase string">
-      				<!--
-      				<option>128</option>
-      				<option>64</option>
-      				<option>56</option>
-      				<option>40</option>
-      				<option>32</option>
-      				<option>24</option>
-      				<option>16</option>
-      				-->
-      			</select>
+      		    <!--
+      		    <option>128</option>
+      		    <option>64</option>
+      		    <option>56</option>
+      		    <option>40</option>
+      		    <option>32</option>
+      		    <option>24</option>
+      		    <option>16</option>
+      		    -->
+      		  </select>
                 </div>
                 <div class="form-group">
                   <label><input type="checkbox" name="UseSymbol_In_PassphraseSetting" value="true" id="UseSymbol_In_PassphraseSetting">Use symbol in passphrase</label>
@@ -95,13 +95,12 @@
               <div class="card-body"><!--<div class="card"> card for table-->
                 <table class="table table-striped">
                   <tbody id="user_passphrase_settings_In_PassphraseSettings">
-                    <!-- ここも設定一覧で収める。ただしユーザー毎に設定値が異なるので、jsで取得させる-->
                     <!--
                       <tr><td id=XXX_In_PassphraseSetting algorithm=XXX, extra=XXX>Column content</td></tr>
                     -->
                   </tbody>
-                  <button type="submit" class="btn btn-primary" id="SubmitGetSetting_In_PassphraseSettings" >Get settings</button>
                 </table>
+                  <button type="submit" class="btn btn-primary" id="SubmitGetSetting_In_PassphraseSettings" >Get settings</button>
               </div><!--<div class="card"> card for table-->
             </div><!--<div class="card"> card for table information-->
           </div><!-- [end] container for passphrase information on right side -->
