@@ -2,12 +2,13 @@ package controller
 
 import (
 	"errors"
-	"github.com/labstack/echo"
-    "github.com/abbot/go-http-auth"
-	"net/http"
-	"../db"
 	"fmt"
+	"net/http"
 	"strconv"
+
+	auth "github.com/abbot/go-http-auth"
+	"github.com/developer-kikikaikai/CreatingHashPassword/db"
+	"github.com/labstack/echo"
 )
 
 type HandlePassphraseInfo struct {
@@ -15,11 +16,11 @@ type HandlePassphraseInfo struct {
 }
 
 type PartOfPassphraseInfo struct {
-	Title string `json:"title" form:"title" query:"title"`
-	Algorithm string `json:"algorithm" form:"algorithm" query:"algorithm"`
-	Seed string `json:"seed" form:"seed" query:"seed"`
-	Length int `json:"length" form:"length" query:"length"`
-	DisableSymbol bool `json:"disable_symbol" form:"disable_symbol" query:"disable_symbol"`
+	Title         string `json:"title" form:"title" query:"title"`
+	Algorithm     string `json:"algorithm" form:"algorithm" query:"algorithm"`
+	Seed          string `json:"seed" form:"seed" query:"seed"`
+	Length        int    `json:"length" form:"length" query:"length"`
+	DisableSymbol bool   `json:"disable_symbol" form:"disable_symbol" query:"disable_symbol"`
 }
 
 func (this *HandlePassphraseInfo) Get(c echo.Context, r *auth.AuthenticatedRequest) error {
@@ -74,7 +75,7 @@ func (this *HandlePassphraseInfo) Delete(c echo.Context, r *auth.AuthenticatedRe
 	}
 
 	//delete DB information
-	for i:=0; i<len(req_body) ; i++ {
+	for i := 0; i < len(req_body); i++ {
 		db.DeletePassphraseInfo(r.Username, req_body[i])
 	}
 
@@ -83,7 +84,7 @@ func (this *HandlePassphraseInfo) Delete(c echo.Context, r *auth.AuthenticatedRe
 
 //always need authorization
 func (this *HandlePassphraseInfo) DoesNeedAuthenticate(method Method) bool {
-	if method  == METHOD_POST {
+	if method == METHOD_POST {
 		return false
 	} else {
 		return true
