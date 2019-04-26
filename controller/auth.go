@@ -2,14 +2,15 @@ package controller
 
 import (
 	"net/http"
+
+	auth "github.com/abbot/go-http-auth"
+	"github.com/developer-kikikaikai/CreatingHashPassword/db"
+	"github.com/developer-kikikaikai/CreatingHashPassword/hash"
 	"github.com/labstack/echo"
-	"github.com/abbot/go-http-auth"
-	"../db"
-	"../hash"
-	_ "fmt"
 )
 
-var realm  string = "CreatingHashPassword"
+var realm string = "CreatingHashPassword"
+
 func authenticate(user, realm string) string {
 	account, err := db.GetAccount(user)
 	if err == nil {
@@ -20,11 +21,11 @@ func authenticate(user, realm string) string {
 }
 
 func GetInsertedPassphrase(user, pass string) string {
-	return hash.HashSum("md5", user + ":" + realm + ":" + pass)
+	return hash.HashSum("md5", user+":"+realm+":"+pass)
 }
 
 //define authenticator to use all
-var authenticator * auth.DigestAuth = authwrapNewDigestAuthenticator()
+var authenticator *auth.DigestAuth = authwrapNewDigestAuthenticator()
 
 func authwrapNewDigestAuthenticator() *auth.DigestAuth {
 	res := auth.NewDigestAuthenticator(realm, authenticate)
@@ -32,7 +33,7 @@ func authwrapNewDigestAuthenticator() *auth.DigestAuth {
 }
 
 //modify auth.Wrap function to use echo format function
-func DigestAuthenticate(input func(c echo.Context, r *auth.AuthenticatedRequest) error) echo.HandlerFunc{
+func DigestAuthenticate(input func(c echo.Context, r *auth.AuthenticatedRequest) error) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		r := c.Request()
 		w := c.Response().Writer
@@ -49,9 +50,8 @@ func DigestAuthenticate(input func(c echo.Context, r *auth.AuthenticatedRequest)
 	}
 }
 
-func NoAuthenticate(input func(c echo.Context, r *auth.AuthenticatedRequest) error) echo.HandlerFunc{
+func NoAuthenticate(input func(c echo.Context, r *auth.AuthenticatedRequest) error) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return input(c, nil);
+		return input(c, nil)
 	}
 }
-

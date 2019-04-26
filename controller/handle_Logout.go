@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"github.com/labstack/echo"
-    "github.com/abbot/go-http-auth"
 	"net/http"
+
+	auth "github.com/abbot/go-http-auth"
+	"github.com/labstack/echo"
 )
 
 type HandleLogout struct {

@@ -1,11 +1,11 @@
 package db
 
 import (
-	"errors"
-	_ "fmt"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -13,46 +13,48 @@ var account_tbl = "account_tbl"
 var pass_tbl = "passphrase_tbl"
 
 type Account struct {
-	Username string
+	Username   string
 	Passphrase string
 }
 
 type PassphraseInfo struct {
-	Username string
-	Title string
-	Algorithm string
-	Seed string
-	Length string
+	Username      string
+	Title         string
+	Algorithm     string
+	Seed          string
+	Length        string
 	DisableSymbol string
 }
 
 //define to read json setting, parameter have to define public
 type DBsetting struct {
-	DBname string
-	User string
+	DBname     string
+	User       string
 	Passphrase string
 }
 
-func sql_db_setting() (DBsetting,error) {
+func sql_db_setting() (DBsetting, error) {
 	var setting DBsetting
 	bytes, err := ioutil.ReadFile("db/dbsetting.json")
-	if err != nil { return setting, err }
+	if err != nil {
+		return setting, err
+	}
 
-	err = json.Unmarshal(bytes, &setting);
-	return setting,err;
+	err = json.Unmarshal(bytes, &setting)
+	return setting, err
 }
 
-func sql_command(query string) ([]map[string]string,error) {
-	setting,err := sql_db_setting()
+func sql_command(query string) ([]map[string]string, error) {
+	setting, err := sql_db_setting()
 	if err != nil {
 		panic(err.Error())
 	}
 
-	db, err := sql.Open("mysql", setting.User + ":" + setting.Passphrase + "@/" + setting.DBname)
+	db, err := sql.Open("mysql", setting.User+":"+setting.Passphrase+"@/"+setting.DBname)
 	if err != nil {
 		panic(err.Error())
 	}
-	defer db.Close()//close after return
+	defer db.Close() //close after return
 
 	results := make([]map[string]string, 0)
 	//fmt.Printf("query:%s\n", query)
@@ -84,7 +86,7 @@ func sql_command(query string) ([]map[string]string,error) {
 		for i, col := range values {
 			// Here we can check if the value is nil (NULL value)
 			if col != nil {
-				result[columns[i]]=string(col)
+				result[columns[i]] = string(col)
 			}
 		}
 		results = append(results, result)
@@ -93,10 +95,10 @@ func sql_command(query string) ([]map[string]string,error) {
 }
 
 func GetAccount(username string) (Account, error) {
-	result := Account{"",""}
-	res , err:= sql_command("SELECT * FROM " + account_tbl + " WHERE username='" + username + "'")
+	result := Account{"", ""}
+	res, err := sql_command("SELECT * FROM " + account_tbl + " WHERE username='" + username + "'")
 	if err != nil {
-		return result,  err
+		return result, err
 	}
 
 	if len(res) != 1 {
@@ -119,7 +121,7 @@ func SetAccount(info Account) bool {
 		_, err = sql_command("INSERT INTO " + account_tbl + " value('" + info.Username + "', '" + info.Passphrase + "')")
 	} else {
 		//update data
-		_, err = sql_command("UPDATE " + account_tbl + " SET passphrase='" + info.Passphrase + "' WHERE username='" + info.Username+ "'")
+		_, err = sql_command("UPDATE " + account_tbl + " SET passphrase='" + info.Passphrase + "' WHERE username='" + info.Username + "'")
 	}
 	if err != nil {
 		return false
@@ -133,8 +135,8 @@ func DeleteAccount(username string) bool {
 	return err == nil
 }
 
-func passphraseResult(res *map[string]string) PassphraseInfo{
-	result := PassphraseInfo{"","","","","0","false"}
+func passphraseResult(res *map[string]string) PassphraseInfo {
+	result := PassphraseInfo{"", "", "", "", "0", "false"}
 	result.Username = (*res)["username"]
 	result.Title = (*res)["title"]
 	result.Algorithm = (*res)["algorithm"]
@@ -147,21 +149,21 @@ func passphraseResult(res *map[string]string) PassphraseInfo{
 func GetAllPassphrase(username string) ([]PassphraseInfo, error) {
 	//var results []PassphraseInfo = make([]PassphraseInfo, 0)
 	results := make([]PassphraseInfo, 0)
-	res , err := sql_command("SELECT * FROM " + pass_tbl + " WHERE username='" + username + "'")
+	res, err := sql_command("SELECT * FROM " + pass_tbl + " WHERE username='" + username + "'")
 	if err != nil {
 		return results, err
 	}
 
-	for i := 0; i < len(res); i++  {
+	for i := 0; i < len(res); i++ {
 		result := passphraseResult(&res[i])
 		results = append(results, result)
 	}
 	return results, nil
 }
 
-func GetPassphraseInfo(username string, title string) (PassphraseInfo,error) {
-	result := PassphraseInfo{"","","","","0","false"}
-	res, err:= sql_command("SELECT * FROM " + pass_tbl + " WHERE username='" + username + "' and title='" + title + "'")
+func GetPassphraseInfo(username string, title string) (PassphraseInfo, error) {
+	result := PassphraseInfo{"", "", "", "", "0", "false"}
+	res, err := sql_command("SELECT * FROM " + pass_tbl + " WHERE username='" + username + "' and title='" + title + "'")
 	if err != nil {
 		return result, err
 	}
@@ -178,15 +180,15 @@ func SetPassphraseInfo(info PassphraseInfo) bool {
 	res, err := GetPassphraseInfo(info.Username, info.Title)
 	if res.Username != info.Username || err != nil {
 		//insert data
-		_,err = sql_command("INSERT INTO " + pass_tbl + " value('" + info.Username + "', '" + info.Algorithm + "', '" + info.Seed + "', '"  + info.Length + "', '" + info.DisableSymbol + "', '" + info.Title + "')")
+		_, err = sql_command("INSERT INTO " + pass_tbl + " value('" + info.Username + "', '" + info.Algorithm + "', '" + info.Seed + "', '" + info.Length + "', '" + info.DisableSymbol + "', '" + info.Title + "')")
 	} else {
 		//update data
-		_, err = sql_command("UPDATE " + pass_tbl + " SET algorithm='" + info.Algorithm + "', seed='" + info.Seed + "', length='"  + info.Length + "', disable_symbol='" + info.DisableSymbol + "' WHERE username='" + info.Username + "' and title='" + info.Title + "'")
+		_, err = sql_command("UPDATE " + pass_tbl + " SET algorithm='" + info.Algorithm + "', seed='" + info.Seed + "', length='" + info.Length + "', disable_symbol='" + info.DisableSymbol + "' WHERE username='" + info.Username + "' and title='" + info.Title + "'")
 	}
 	return err == nil
 }
 
 func DeletePassphraseInfo(username string, title string) bool {
-	_,err := sql_command("DELETE FROM " + pass_tbl + " WHERE username='" + username + "' and title='" + title + "'")
+	_, err := sql_command("DELETE FROM " + pass_tbl + " WHERE username='" + username + "' and title='" + title + "'")
 	return err == nil
 }

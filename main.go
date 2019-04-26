@@ -1,15 +1,16 @@
 package main
 
 import (
-	"./controller"
-	"io"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 	"fmt"
+	"io"
 	"os"
 	"os/signal"
-	"syscall"
 	"sync"
+	"syscall"
+
+	"github.com/developer-kikikaikai/CreatingHashPassword/controller"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 type Template struct {
@@ -22,29 +23,30 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 //request dump
 func bodyDumpHandler(c echo.Context, reqBody, resBody []byte) {
-  fmt.Printf("Request Body: %v\n", string(reqBody))
-  fmt.Printf("Response Body: %v\n", string(resBody))
+	fmt.Printf("Request Body: %v\n", string(reqBody))
+	fmt.Printf("Response Body: %v\n", string(resBody))
 }
 
 var e *echo.Echo
+
 // exit signal handler
 func SignalHandler(doneCh chan struct{}) {
 	//set signal channel
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh,
 		syscall.SIGTERM,
- 		syscall.SIGINT)
+		syscall.SIGINT)
 	defer signal.Stop(sigCh)
 	for {
 		select {
-			case <-sigCh:
-				//send exit by using 
-				//fmt.Printf("receive signal\n")
-				e.Close()
-			case <-doneCh:
-				//fmt.Printf("receive doneCh\n")
-				close(sigCh)
-				return;
+		case <-sigCh:
+			//send exit by using
+			//fmt.Printf("receive signal\n")
+			e.Close()
+		case <-doneCh:
+			//fmt.Printf("receive doneCh\n")
+			close(sigCh)
+			return
 		}
 	}
 }

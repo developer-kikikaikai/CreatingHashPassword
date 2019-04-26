@@ -1,16 +1,17 @@
 package controller
 
 import (
-	"github.com/labstack/echo"
-    "github.com/abbot/go-http-auth"
-	"net/http"
 	"fmt"
-	"../db"
+	"net/http"
+
+	auth "github.com/abbot/go-http-auth"
+	"github.com/developer-kikikaikai/CreatingHashPassword/db"
+	"github.com/labstack/echo"
 )
 
 type HandleUserAccount struct {
 	MsgHandler
-	Username string
+	Username   string
 	Passphrase string
 }
 
@@ -23,7 +24,7 @@ func (this *HandleUserAccount) Post(c echo.Context, r *auth.AuthenticatedRequest
 	}
 
 	//update/insert DB information
-	if _,err := db.GetAccount(req_body.Username); err == nil {
+	if _, err := db.GetAccount(req_body.Username); err == nil {
 		fmt.Printf("HandleUserAccount.post requested user is exist\n")
 		return c.NoContent(http.StatusBadRequest)
 	}
